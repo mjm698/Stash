@@ -1,0 +1,30 @@
+div
+{
+    margin: 10px;
+}
+#divContainer
+{
+    width: 100%;
+}
+#divMyStash
+{
+    width: 20%;
+    float: left;
+}
+#divThisStash
+{
+    width: 70%%;
+    float: left;
+}
+.myStash
+{
+    border: 1px solid gray;
+}
+.myStash:hover
+{
+    background-color: gray;
+}
+.selectedStash
+{
+    color: red;
+}
