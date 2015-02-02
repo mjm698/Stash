@@ -1,0 +1,21 @@
+<?xml verison="1.0" encoding="UTF-8"?>
+<stash name="My Stash" id="1">
+    <content>
+        <link value="http://i.imgur.com/kOGWKFw.jpg" time="2015-01-31T18:47:13.839Z" status="viewed">
+            <user name="maxwell" id="maxwell.mosley@gmail.com" />
+            <comments>
+                <comment text="this is so funny" time="2015-01-31T18:47:13.839Z">
+                    <user name="maxwell" id="maxwell.mosley@gmail.com" />
+                </comment>
+            </comments>
+        </link>
+        <link value="http://i.imgur.com/dR3XRDr.jpg" time="2015-01-31T18:52:34.695Z" status="viewed">
+            <user name="maxwell" id="maxwell.mosley@gmail.com" />
+            <comments>
+                <comment text="this is so cute.." time="2015-01-31T18:52:34.695Z">
+                    <user name="maxwell" id="maxwell.mosley@gmail.com" />
+                </comment>
+            </comments>
+        </link>
+    </content>
+<stash>

@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../api/comment-service.html">
+<link rel="import" href="comment-element.html">
+
+<polymer-element name="comment-list" attributes="submitEvent comments">
+    <template>
+        <comment-service id='service' comment="{{newComment}}"></comment-service>
+        <div>
+            <template repeat="{{comment in comments}}">
+                <comment-element comment="{{comment}}">
+                </comment-element>
+            </template>
+            <div>
+                <label for="commentInput">Comment:</label>
+                <input id="commentInput" value={{newComment}}>
+                <button id="commentButton" on-click="{{submitEvent}}">Comment</button>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            newComment: "";
+            submitEvent: function()
+            {
+                console.log("submit " + newComment);
+            }
+        });
+    </script>
+</polymer-element>

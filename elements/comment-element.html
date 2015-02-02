@@ -1,0 +1,15 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="comment-element" attributes="comment">
+    <template>
+        <div>
+            <h2>{{comment.user.name}}</h2>
+            <p>{{comment.text}}</p>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            comment: "",
+        });
+    </script>
+</polymer-element>

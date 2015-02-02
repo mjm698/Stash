@@ -1,0 +1,12 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="content-element.html">
+
+<polymer-element name="content-list" attributes="data">
+    <template>
+        <div layout vertical center>
+            <template repeat="{{content in data.content}}">
+                <content-element data={{content}}></content-element>
+            </template>
+        </div>
+    </template>
+</polymer-element>

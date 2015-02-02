@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="user-list.html">
+
+<polymer-element name="stash-element" attributes="stash">
+    <template>
+        <style>
+            :host {
+              display: block;
+              position: relative;
+              background-color: white;
+              width: 100%;
+              font-weight: 300;
+            }
+            h2 {
+                margin: 0px;
+            }
+        </style>
+        <div class="stash-element" layout vertical center>
+            <h2>{{stash.name}}</h2>
+            <user-list users={{stash.users}}></user-list>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            stash: "",
+        });
+    </script>
+</polymer-element>

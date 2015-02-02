@@ -1,0 +1,18 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="comment-list.html">
+
+<polymer-element name="content-element" attributes="data">
+    <template>
+        <comment-list comments="{{data.comments}}"></comment-list>
+    </template>
+    <script>
+        Polymer({
+            owner: "Maxwell",
+            data: "",
+            created: function() { },
+            ready: function() { },
+            attributeChanged: function(attrName, oldVal, newVal) { },
+            commentSubmitEvent: function() { }
+        });
+    </script>
+</polymer-element>

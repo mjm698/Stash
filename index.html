@@ -1,18 +1,52 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
         <link rel="stylesheet" type="text/css" href="index.css"></link>
+        <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+        <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+        <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+
+        <link rel="import" href="elements/stash-list.html">
         <title>Stash</title>
+        
+        <style>
+            html,body {
+                height: 100%;
+                margin: 0;
+                background-color: #E5E5E5;
+                font-family: 'RobotoDraft', sans-serif;
+            }
+            h2 {
+                margin: 0;
+            }
+            core-header-panel {
+                height: 100%;
+                overflow: auto;
+            }
+            core-toolbar {
+                background: #03a9f4;
+                color: white;
+            }
+            .container {
+                width: 80%;
+                margin: 5px auto;
+            }
+            @media (min-width: 481px) {
+                .container {
+                    width: 400px;
+                }
+            }
+        </style>
     </head>
     <body>
-        <div id="divContainer">
-            <div id="divHeader">
+        <core-header-panel>
+            <core-toolbar> 
+            </core-toolbar>
+            <div class="container">
+                <stash-list userId="maxwell.mosley@gmail.com"></stash-list>
             </div>
-            <div id="divMyStash">
-            </div>
-            <div id="divThisStash">
-                <div id="divStashName"> </div>
-            </div>
-        </div>
+        </core-header-panel>
         <script src="index.js" type="text/javascript"></script>
     </body>
 </html>

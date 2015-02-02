@@ -1,0 +1,34 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="user-service" attributes="userId stashes">
+    <template>
+        <core-ajax id="ajax" 
+            auto 
+            url="../data/stashList.json"
+            on-core-response="{{stashesLoaded}}"
+            handleAs="json">
+        </core-ajax>
+    </template>
+    <script>
+        Polymer('user-service', {
+            created: function() 
+            { 
+                this.stashes = [];
+            },
+            stashesLoaded: function() 
+            { 
+                var allStashes = this.$.ajax.response.slice(0);
+                var index;
+                for(index = 0; index < allStashes.length; index++)
+                {
+                    if(this.userId === allStashes[index].id)
+                    {
+                        this.stashes = allStashes[index].stashes;
+                        break;
+                    }
+                }
+            }
+        });
+    </script>
+</polymer-element>

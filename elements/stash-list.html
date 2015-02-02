@@ -1,0 +1,31 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../api/user-service.html">
+<link rel="import" href="stash-element.html">
+
+<polymer-element name="stash-list" attributes="userId">
+    <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+            }
+            stash-element {
+                margin-bottom: 10px;
+            }
+        </style>
+        <user-service id='service' userId="{{userId}}" stashes="{{stashes}}"></user-service>
+        <div>
+            <template repeat="{{stash in stashes}}">
+                <stash-element stash="{{stash}}" on-click="{{loadStash}}"></stash-element>
+            </template>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            loadStash: function()
+            {
+                console.log("load stash");
+            }
+        });
+    </script>
+</polymer-element>

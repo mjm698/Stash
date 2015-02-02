@@ -31,44 +31,96 @@ var userData = { "user": {
                       ]
                     }
                 ] } };
-var fakeStashData = { "name" : "My Stash",
-                  "id" : "1",
-                  "content" : [
-                    {"link" : "http://i.imgur.com/kOGWKFw.jpg",
-                     "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
-                     "time" : "2015-01-31T18:47:13.839Z",
-                     "status" : "viewed",
-                     "comments" : [ 
-                        { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
-                          "text" : "This is so funny",
-                          "time" : "2015-01-31T18:47:13.839Z" 
-                        }
-                     ] 
-                    },
-                    {"link" : "http://i.imgur.com/dR3XRDr.jpg",
-                     "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
-                     "time" : "2015-01-31T18:52:34.695Z",
-                     "status" : "viewed",
-                     "comments" : [ 
-                        { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
-                          "text" : "This is so cute...",
-                          "time" : "2015-01-31T18:52:34.695Z"
-                        }
-                     ]
-                    }
-                  ] };
+
+var fakeStashData = { "stashList" : [
+    { "name" : "My Stash",
+      "id" : "1",
+      "content" : [
+        {"link" : "http://i.imgur.com/kOGWKFw.jpg",
+         "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+         "time" : "2015-01-31T18:47:13.839Z",
+         "status" : "viewed",
+         "comments" : [ 
+            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so funny",
+              "time" : "2015-01-31T18:47:13.839Z" 
+            }
+         ] 
+        },
+        {"link" : "http://i.imgur.com/dR3XRDr.jpg",
+         "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+         "time" : "2015-01-31T18:52:34.695Z",
+         "status" : "viewed",
+         "comments" : [ 
+            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so cute...",
+              "time" : "2015-01-31T18:52:34.695Z"
+            }
+         ]
+        }
+      ] },
+    { "name" : "Our Stash",
+      "id" : "2",
+      "content" : [
+        {"link" : "http://i.imgur.com/kOGWKFw.jpg",
+         "user" : { "name" : "ishita", "id" : "ishitaaloni@gmail.com" },
+         "time" : "2015-01-31T18:47:13.839Z",
+         "status" : "viewed",
+         "comments" : [ 
+            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so funny",
+              "time" : "2015-01-31T18:47:13.839Z" 
+            }
+         ] 
+        },
+        {"link" : "http://i.imgur.com/dR3XRDr.jpg",
+         "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+         "time" : "2015-01-31T18:52:34.695Z",
+         "status" : "viewed",
+         "comments" : [ 
+            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so cute...",
+              "time" : "2015-01-31T18:52:34.695Z"
+            }
+         ]
+        }
+      ] },
+    { "name" : "Poopy Stash",
+      "id" : "3",
+      "content" : [
+        {"link" : "http://i.imgur.com/kOGWKFw.jpg",
+         "user" : { "name" : "morgan", "id" : "poopy.pi@gmail.com" },
+         "time" : "2015-01-31T18:47:13.839Z",
+         "status" : "viewed",
+         "comments" : [ 
+            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so funny",
+              "time" : "2015-01-31T18:47:13.839Z" 
+            }
+         ] 
+        },
+        {"link" : "http://i.imgur.com/dR3XRDr.jpg",
+         "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+         "time" : "2015-01-31T18:52:34.695Z",
+         "status" : "viewed",
+         "comments" : [ 
+            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so cute...",
+              "time" : "2015-01-31T18:52:34.695Z"
+            }
+         ]
+        }
+      ] }
+    ] };
 
 var currentStash = { id: 0,
                      name: '',
                      content: []
                    };
-
 main();
-
 function main()
 {
-    createStashList(userData.user.stashes);
-    Object.observe(currentStash, stashObserver, ['update']);
+    //createStashList(userData.user.stashes);
 }
 
 function createStashList(stashes) 
@@ -110,8 +162,11 @@ function loadStash(id)
     unselectStash();
 
     currentStash = loadStashData(id);
-
-    selectStash(id);
+    if(currentStash !== null) 
+    {
+        selectStash(id);
+        updateStashDiv();
+    }
 }
 
 function unselectStash()
@@ -137,8 +192,12 @@ function selectStash(id)
 function loadStashData(id)
 {
     //todo majix
-    currentStash.id = id;
-    return fakeStashData;
+    var index;
+    for(index = 0; index < fakeStashData.stashList.length; index++)
+    {
+        if(fakeStashData.stashList[index].id === id) return fakeStashData.stashList[index];
+    }
+    return null;
 }
 
 function stashObserver(changes)
@@ -153,5 +212,38 @@ function stashObserver(changes)
 
 function updateStashDiv()
 {
+    var index;
+    var stashDiv = document.getElementById('divThisStash');
+    var list = document.createElement('ul');
+
+    emptyDiv(stashDiv);
+
+    stashDiv.innerHTML = currentStash.name;
+    
+    for(index = 0; index < currentStash.content.length; index++)
+    {
+        list.appendChild(createContent(index));
+    }
+
+    stashDiv.appendChild(list);
+}
+
+function emptyDiv(divToEmpty)
+{
+    while(divToEmpty.lastChild) 
+    {
+        divToEmpty.removeChild(divToEmpty.lastChild);
+    }
+    divToEmpty.innerHTML = '';
+}
+
+function createContent(index)
+{
+   var item = document.createElement('li');
+
+   item.appendChild(document.createTextNode(currentStash.content[index].user.name));
+   item.appendChild(document.createTextNode(currentStash.content[index].link));
+
+   return item;
 }
 

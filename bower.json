@@ -1,0 +1,24 @@
+{
+  "name": "Stash",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mjm698/Stash",
+  "authors": [
+    "maxwell <mjm698@nyu.edu>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.4",
+    "webcomponentsjs": "~0.5.4"
+  }
+}
