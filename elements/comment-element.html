@@ -2,8 +2,19 @@
 
 <polymer-element name="comment-element" attributes="comment">
     <template>
+        <style>
+            :host {
+                display: block;
+                background-color: gray;
+            }
+            user-element {
+                margin: 0px;
+            }
+        </style>
         <div>
-            <h2>{{comment.user.name}}</h2>
+            <user-element>
+                <p>{{comment.user.name}}</p>
+            </user-element>
             <p>{{comment.text}}</p>
         </div>
     </template>

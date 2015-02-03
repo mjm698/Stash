@@ -3,6 +3,18 @@
 
 <polymer-element name="content-element" attributes="data">
     <template>
+        <style>
+            :host {
+              display: block;
+              position: relative;
+              background-color: white;
+              width: 100%;
+            }
+            comment-list {
+                margin: auto 10px;
+            }
+        </style>
+        <p>{{data.link}}</p>
         <comment-list comments="{{data.comments}}"></comment-list>
     </template>
     <script>

@@ -27,7 +27,7 @@
       ] 
     },
     { "name" : "Our Stash",
-      "id" : "20",
+      "id" : "2",
       "content" : [
         {"link" : "http://i.imgur.com/kOGWKFw.jpg",
          "user" : { "name" : "ishita", "id" : "ishitaaloni@gmail.com" },
@@ -61,8 +61,8 @@
          "time" : "2015-01-31T18:47:13.839Z",
          "status" : "viewed",
          "comments" : [ 
-            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
-              "text" : "This is so funny",
+            { "user" : { "name" : "morgan", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is not funny",
               "time" : "2015-01-31T18:47:13.839Z" 
             }
          ] 
@@ -72,8 +72,8 @@
          "time" : "2015-01-31T18:52:34.695Z",
          "status" : "viewed",
          "comments" : [ 
-            { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
-              "text" : "This is so cute...",
+            { "user" : { "name" : "morgan", "id" : "maxwell.mosley@gmail.com" },
+              "text" : "This is so not cute...",
               "time" : "2015-01-31T18:52:34.695Z"
             }
          ]

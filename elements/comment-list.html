@@ -4,11 +4,20 @@
 
 <polymer-element name="comment-list" attributes="submitEvent comments">
     <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+                font-size: 5pt;
+            }
+            comment-element {
+                margin-bottom: 10px;
+            }
+        </style>
         <comment-service id='service' comment="{{newComment}}"></comment-service>
         <div>
             <template repeat="{{comment in comments}}">
-                <comment-element comment="{{comment}}">
-                </comment-element>
+                <comment-element comment="{{comment}}"></comment-element>
             </template>
             <div>
                 <label for="commentInput">Comment:</label>
@@ -19,7 +28,7 @@
     </template>
     <script>
         Polymer({
-            newComment: "";
+            newComment: "",
             submitEvent: function()
             {
                 console.log("submit " + newComment);

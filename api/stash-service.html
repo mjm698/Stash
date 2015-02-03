@@ -1,20 +1,20 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="stash-service" attributes="stashs">
+<polymer-element name="stash-service" attributes="stashId userId data url">
     <template>
-        <core-ajax id="ajax" auto url="../data/stashData.json"
-            on-core-response="{{stashsLoaded}}"
+    <core-ajax id="ajax" auto url="{{url}}"
+            on-core-response="{{dataLoaded}}"
             handleAs="json">
         </core-ajax>
     </template>
     <script>
         Polymer('stash-service', {
             created: function() {
-                this.stashs = [];
+                this.data = [];
             },
-            stashsLoaded: function() {
-                this.stashs = this.$.ajax.response.slice(0);
+            dataLoaded: function() {
+                this.data = this.$.ajax.response;
             }
         });
     </script>

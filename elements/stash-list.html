@@ -2,29 +2,26 @@
 <link rel="import" href="../api/user-service.html">
 <link rel="import" href="stash-element.html">
 
-<polymer-element name="stash-list" attributes="userId">
+<polymer-element name="stash-list" attributes="userId loadStash selectedStash">
     <template>
         <style>
-            :host {
-                display: block;
-                width: 100%;
-            }
+            :host { }
             stash-element {
-                margin-bottom: 10px;
+                margin: 10px auto;
             }
         </style>
         <user-service id='service' userId="{{userId}}" stashes="{{stashes}}"></user-service>
         <div>
             <template repeat="{{stash in stashes}}">
-                <stash-element stash="{{stash}}" on-click="{{loadStash}}"></stash-element>
+            <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}"></stash-element>
             </template>
         </div>
     </template>
     <script>
         Polymer({
-            loadStash: function()
+            loadStash: function(e, someBool, element)
             {
-                console.log("load stash");
+                this.fire('loadStash', {id: element.id, name: element.stash.name});
             }
         });
     </script>
