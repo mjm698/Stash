@@ -12,7 +12,7 @@ function loadStash(e)
             var stashList = document.querySelector('stash-list');
             stashList.selectedStash = e.detail.id;
             contentList.stashId = e.detail.id;
-            document.getElementById('stashName').innerHTML = e.detail.name;
+            document.getElementById('stashName').currentStash = e.detail.name;
             contentList.url = "../data/stashData" + contentList.stashId + ".json";
         }
 

@@ -18,15 +18,17 @@
             <core-header-panel main mode="waterfall">
                 <core-toolbar> 
                     <core-icon-button core-drawer-toggle icon="menu"></core-icon-button>
-                    <span id='stashName' flex></span>
+                    <template id='stashName' is='auto-binding'>
+                        <div>{{currentStash}}</div>
+                    </template>
                 </core-toolbar>
                 <div flex>
                     <content-list userId="maxwell.mosley@gmail.com"></content-list>
                 </div>
             </core-header-panel>
-            <core-header-panel drawer>
+            <core-header-panel drawer mode="seamed">
                 <div class='stashContainer'>
-                    <stash-list userId="maxwell.mosley@gmail.com" selectedStash="10"></stash-list>
+                    <stash-list userId="maxwell.mosley@gmail.com"></stash-list>
                 </div>
             </core-header-panel>
         <core-drawer-panel>

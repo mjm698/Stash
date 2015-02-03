@@ -1,11 +1,11 @@
 html,body {
-    height: 100%;
     background-color: #E5E5E5;
     font-family: 'RobotoDraft', sans-serif;
 }
 core-header-panel {
     height: 100%;
     overflow: auto;
+    display: block;
 }
 core-toolbar {
     background: #03a9f4;
@@ -13,6 +13,7 @@ core-toolbar {
 }
 div.stashContainer
 {
+    padding-left: 10px;
     padding-right: 10px;
 }
 [drawer]
