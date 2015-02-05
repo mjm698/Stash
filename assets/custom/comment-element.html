@@ -1,0 +1,34 @@
+<link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/polymer-filters/polymer-filters.html">
+
+<polymer-element name="comment-element" attributes="comment">
+    <template>
+        <style>
+            :host {
+                display: block;
+                padding: 2px;
+            }
+            user-element {
+                margin: 0px;
+                float: left;
+            }
+            .commentTime {
+                float: right;
+            }
+            .commentText {
+                clear: both;
+                padding: 4px 4px;
+            }
+        </style>
+        <div>
+            <user-element> {{comment.user.name}} </user-element>
+            <div class='commentTime'> {{comment.time | date('hh:mm t MM-dd-yyyy') }} </div>
+            <div class='commentText'>{{comment.text}}</div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            comment: "",
+        });
+    </script>
+</polymer-element>

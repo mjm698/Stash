@@ -1,0 +1,37 @@
+<link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="comment-list.html">
+
+<polymer-element name="content-element" attributes="data">
+    <template>
+        <style>
+            :host {
+              display: block;
+              position: relative;
+              background-color: white;
+              width: 100%;
+            }
+            comment-list {
+                margin: auto 10px;
+            }
+        </style>
+        <div>
+            <div>Added: {{data.time | date("hh:mm t MM-dd-yyyy") }}</div>
+            <div>Status: {{data.status}}</div>
+            <div>{{data.link}}</div>
+        </div>
+        <paper-icon-button title='Archive' icon='done'></paper-icon-button>
+        <paper-icon-button title='View original' icon='pageview'></paper-icon-button>
+        <paper-icon-button title='Delete' icon='delete'></paper-icon-button>
+        <comment-list comments="{{data.comments}}"></comment-list>
+    </template>
+    <script>
+        Polymer('content-element', {
+            owner: "Maxwell",
+            data: "",
+            created: function() { },
+            attributeChanged: function(attrName, oldVal, newVal) { },
+            commentSubmitEvent: function() { }
+        });
+    </script>
+</polymer-element>

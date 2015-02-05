@@ -1,0 +1,50 @@
+<link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/ajax-form/ajax-form.html">
+<link rel="import" href="/static/components/paper-input/paper-input-decorator.html">
+<link rel="import" href="/static/components/paper-button/paper-button.html">
+<link rel="import" href="comment-element.html">
+
+<polymer-element name="comment-list" attributes="submitEvent comments">
+    <template>
+        <style>
+            :host {
+                display: block;
+                font-size: 9pt;
+            }
+            comment-element {
+                margin-bottom: 10px;
+            }
+            .comments {
+                max-height: 150px;
+                overflow: auto;
+            }
+        </style>
+        <comment-service id='service' comment="{{newComment}}"></comment-service>
+        <div>
+            <div class='comments'>
+                <template class='comments' repeat="{{comment in comments}}">
+                    <comment-element comment="{{comment}}"></comment-element>
+                </template>
+            </div>
+            <form id='commentForm' is="ajax-form" method="post" action="../data/commentData.json">
+                <paper-input-decorator label="Comment">
+                    <textarea rows='2' value={{newComment}}></textarea>
+                </paper-input-decorator>
+                <paper-button type='submit' id="commentButton" on-click="{{submitEvent}}">Comment</paper-button>
+            </form>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            submitEvent: function()
+            {
+                console.log("submit " + this.newComment);
+                this.$.commentForm.submit();
+            },
+            submitComment: function()
+            {
+                console.log("new comment");
+            }
+        });
+    </script>
+</polymer-element>
