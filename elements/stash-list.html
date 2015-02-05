@@ -12,7 +12,7 @@
         <user-service id='service' userId="{{userId}}" stashes="{{stashes}}"></user-service>
         <div>
             <template repeat="{{stash in stashes}}">
-            <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}"></stash-element>
+                <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}"></stash-element>
             </template>
         </div>
     </template>

@@ -19,6 +19,9 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.4",
-    "webcomponentsjs": "~0.5.4"
+    "webcomponentsjs": "~0.5.4",
+    "polymer-filters": "~0.1.1",
+    "paper-input": "Polymer/paper-input#~0.5.4",
+    "ajax-form": "~1.5.2"
   }
 }

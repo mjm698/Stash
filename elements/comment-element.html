@@ -1,21 +1,29 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer-filters/polymer-filters.html">
 
 <polymer-element name="comment-element" attributes="comment">
     <template>
         <style>
             :host {
                 display: block;
-                background-color: gray;
+                padding: 2px;
             }
             user-element {
                 margin: 0px;
+                float: left;
+            }
+            .commentTime {
+                float: right;
+            }
+            .commentText {
+                clear: both;
+                padding: 4px 4px;
             }
         </style>
         <div>
-            <user-element>
-                <p>{{comment.user.name}}</p>
-            </user-element>
-            <p>{{comment.text}}</p>
+            <user-element> {{comment.user.name}} </user-element>
+            <div class='commentTime'> {{comment.time | date('hh:mm t MM-dd-yyyy') }} </div>
+            <div class='commentText'>{{comment.text}}</div>
         </div>
     </template>
     <script>

@@ -7,10 +7,22 @@
      "status" : "viewed",
      "comments" : [ 
         { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+          "text" : "This is so funny and is a longer comment to test how the thing will look with more text than i currently have hopefully this is enough text to test what i want",
+          "time" : "2015-01-31T18:47:13.839Z" 
+        },
+        { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
           "text" : "This is so funny",
           "time" : "2015-01-31T18:47:13.839Z" 
         },
-		{ "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+        { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+          "text" : "This is so funny",
+          "time" : "2015-01-31T18:47:13.839Z" 
+        },
+        { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
+          "text" : "This is so funny",
+          "time" : "2015-01-31T18:47:13.839Z" 
+        },
+        { "user" : { "name" : "maxwell", "id" : "maxwell.mosley@gmail.com" },
           "text" : "lol...",
           "time" : "2015-01-31T18:57:13.839Z" 
         }

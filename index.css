@@ -16,6 +16,9 @@ div.stashContainer
     padding-left: 10px;
     padding-right: 10px;
 }
+div.contentContainer
+{
+}
 [drawer]
 {
     background-color: #E5E5E5;

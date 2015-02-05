@@ -1,4 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ajax-form/ajax-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-decorator.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../api/comment-service.html">
 <link rel="import" href="comment-element.html">
 
@@ -7,31 +10,41 @@
         <style>
             :host {
                 display: block;
-                width: 100%;
-                font-size: 5pt;
+                font-size: 9pt;
             }
             comment-element {
                 margin-bottom: 10px;
             }
+            .comments {
+                max-height: 150px;
+                overflow: auto;
+            }
         </style>
         <comment-service id='service' comment="{{newComment}}"></comment-service>
         <div>
-            <template repeat="{{comment in comments}}">
-                <comment-element comment="{{comment}}"></comment-element>
-            </template>
-            <div>
-                <label for="commentInput">Comment:</label>
-                <input id="commentInput" value={{newComment}}>
-                <button id="commentButton" on-click="{{submitEvent}}">Comment</button>
+            <div class='comments'>
+                <template class='comments' repeat="{{comment in comments}}">
+                    <comment-element comment="{{comment}}"></comment-element>
+                </template>
             </div>
+            <form id='commentForm' is="ajax-form" method="post" action="../data/commentData.json">
+                <paper-input-decorator label="Comment">
+                    <textarea rows='2' value={{newComment}}></textarea>
+                </paper-input-decorator>
+                <paper-button type='submit' id="commentButton" on-click="{{submitEvent}}">Comment</paper-button>
+            </form>
         </div>
     </template>
     <script>
         Polymer({
-            newComment: "",
             submitEvent: function()
             {
-                console.log("submit " + newComment);
+                console.log("submit " + this.newComment);
+                this.$.commentForm.submit();
+            },
+            submitComment: function()
+            {
+                console.log("new comment");
             }
         });
     </script>

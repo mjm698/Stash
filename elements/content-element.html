@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="comment-list.html">
 
 <polymer-element name="content-element" attributes="data">
@@ -14,15 +15,21 @@
                 margin: auto 10px;
             }
         </style>
-        <p>{{data.link}}</p>
+        <div>
+            <div>Added: {{data.time | date("hh:mm t MM-dd-yyyy") }}</div>
+            <div>Status: {{data.status}}</div>
+            <div>{{data.link}}</div>
+        </div>
+        <paper-icon-button title='Archive' icon='done'></paper-icon-button>
+        <paper-icon-button title='View original' icon='pageview'></paper-icon-button>
+        <paper-icon-button title='Delete' icon='delete'></paper-icon-button>
         <comment-list comments="{{data.comments}}"></comment-list>
     </template>
     <script>
-        Polymer({
+        Polymer('content-element', {
             owner: "Maxwell",
             data: "",
             created: function() { },
-            ready: function() { },
             attributeChanged: function(attrName, oldVal, newVal) { },
             commentSubmitEvent: function() { }
         });
