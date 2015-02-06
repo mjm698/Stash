@@ -1,4 +1,5 @@
 <link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/core-ajax/core-ajax.html">
 <link rel="import" href="stash-element.html">
 
 <polymer-element name="stash-list" attributes="userId loadStash selectedStash">
@@ -8,7 +9,14 @@
                 margin: 10px auto;
             }
         </style>
-        <user-service id='service' userId="{{userId}}" stashes="{{stashes}}"></user-service>
+        <core-ajax id="getStashes"
+                   auto
+                   method="get"
+                   url="/stash/"
+                   headers='{"USER_CLIENT":"{{userId}}"}'
+                   response="{{stashes}}"
+                   handleAs="json">
+        </core-ajax>
         <div>
             <template repeat="{{stash in stashes}}">
                 <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}"></stash-element>
@@ -19,7 +27,7 @@
         Polymer({
             loadStash: function(e, someBool, element)
             {
-                this.fire('loadStash', {id: element.id, name: element.stash.name});
+                this.fire('loadStash', {id: element.stash.id, name: element.stash.name});
             }
         });
     </script>

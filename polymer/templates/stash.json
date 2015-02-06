@@ -1,0 +1,6 @@
+{
+    "name":"{{stash.name}}",
+    "time":"{{stash.time}}",
+    "owner":"{{stash.owner}}",
+    "id":"{{stash.id}}"
+}

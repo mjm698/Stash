@@ -1,0 +1,4 @@
+[{% for stash in stashes %}
+    {% include "stash.json" with stash=stash%}{%if not forloop.last%},{%endif%}
+{% endfor %}
+]

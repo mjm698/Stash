@@ -1,6 +1,6 @@
 import django
 from django.utils import timezone
-from models import *
+from polymer.models import *
 
 django.setup()
 

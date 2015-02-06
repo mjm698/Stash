@@ -9,17 +9,16 @@
                 margin-top: 10px;
             }
         </style>
-        <stash-service id='service' stashId="{{stashId}}" url="{{url}}" userId="{{userId}}" data="{{data}}"></stash-service>
+        <!--<stash-service id='service' stashId="{{stashId}}" url="{{url}}" userId="{{userId}}" data="{{data}}"></stash-service>
         <div layout vertical center>
             <template repeat="{{content in data.content}}">
                 <content-element data={{content}}></content-element>
             </template>
-        </div>
+        </div>/-->
     </template>
     <script>
         Polymer({ 
             ready: function() {
-                this.stashId = '3';
             }
         });
     </script>

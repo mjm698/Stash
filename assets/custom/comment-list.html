@@ -19,7 +19,7 @@
                 overflow: auto;
             }
         </style>
-        <comment-service id='service' comment="{{newComment}}"></comment-service>
+        <!--<comment-service id='service' comment="{{newComment}}"></comment-service>/-->
         <div>
             <div class='comments'>
                 <template class='comments' repeat="{{comment in comments}}">
@@ -36,6 +36,7 @@
     </template>
     <script>
         Polymer({
+            ready: function() { console.log('comment list'); },
             submitEvent: function()
             {
                 console.log("submit " + this.newComment);
