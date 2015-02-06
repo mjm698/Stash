@@ -1,7 +1,8 @@
 <link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/core-ajax/core-ajax.html">
 <link rel="import" href="content-element.html">
 
-<polymer-element name="content-list" attributes="stashId userId url">
+<polymer-element name="content-list" attributes="stashId userId">
     <template>
         <style>
             :host { }
@@ -9,17 +10,25 @@
                 margin-top: 10px;
             }
         </style>
-        <!--<stash-service id='service' stashId="{{stashId}}" url="{{url}}" userId="{{userId}}" data="{{data}}"></stash-service>
+        <core-ajax id="getContent"
+                   auto
+                   method="get"
+                   url="/content/"
+                   headers='{"EMAIL":"{{ userId }}",
+                             "STASHID":"{{ stashId }}"}'
+                   response="{{data}}"
+                   params='{"email":"{{ userId }}",
+                            "stashId":"{{ stashId}}"}'
+                   handleAs="json">
+        </core-ajax>
         <div layout vertical center>
-            <template repeat="{{content in data.content}}">
+            <template repeat="{{content in data}}">
                 <content-element data={{content}}></content-element>
             </template>
-        </div>/-->
+        </div>
     </template>
     <script>
         Polymer({ 
-            ready: function() {
-            }
         });
     </script>
 </polymer-element>

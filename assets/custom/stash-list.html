@@ -13,7 +13,7 @@
                    auto
                    method="get"
                    url="/stash/"
-                   headers='{"USER_CLIENT":"{{userId}}"}'
+                   headers='{"EMAIL":"{{ userId }}"}'
                    response="{{stashes}}"
                    handleAs="json">
         </core-ajax>
@@ -27,7 +27,7 @@
         Polymer({
             loadStash: function(e, someBool, element)
             {
-                this.fire('loadStash', {id: element.stash.id, name: element.stash.name});
+                this.fire('loadStash', {id: element.stash.id, name: element.stash.name, userId: this.userId});
             }
         });
     </script>

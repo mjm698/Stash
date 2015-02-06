@@ -30,7 +30,7 @@ class Content(models.Model):
     updateTime = models.DateTimeField('date updated')
     
     def __unicode__(self):
-        return u'%s %s by: %s' % (self.link, self.status, self.user.name)
+        return u'%s by: %s' % (self.link, self.user.name)
 
 class Status(models.Model):
     user = models.ForeignKey(User)

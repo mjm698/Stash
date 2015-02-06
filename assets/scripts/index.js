@@ -2,7 +2,7 @@ var currentStash;
 main();
 function main()
 {
-    currentStash = "maxwell's stash";
+    document.getElementById('stashName').innerHTML = "maxwell's stash";
     document.querySelector('stash-list').addEventListener('loadStash', loadStash);
 }
 
@@ -14,8 +14,8 @@ function loadStash(e)
             var stashList = document.querySelector('stash-list');
             stashList.selectedStash = e.detail.id;
             contentList.stashId = e.detail.id;
-            document.getElementById('stashName').currentStash = e.detail.name;
-            //contentList.url = "../data/stashData" + contentList.stashId + ".json";
+            contentList.userId = e.detail.userId;
+            document.getElementById('stashName').innerHTML = e.detail.name;
         }
 
         toggleDrawer();

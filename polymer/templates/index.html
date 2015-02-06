@@ -19,12 +19,10 @@
             <core-header-panel main mode="waterfall">
                 <core-toolbar> 
                     <core-icon-button core-drawer-toggle icon="menu"></core-icon-button>
-                    <template id='stashName' is='auto-binding'>
-                        <div>{{currentStash}}</div>
-                    </template>
+                    <div id='stashName'> </div>
                 </core-toolbar>
                 <div class='contentContainer' flex>
-                    <content-list userId="maxwell.mosley@gmail.com"></content-list>
+                    <content-list userId="maxwell.mosley@gmail.com" stashId="1"></content-list>
                 </div>
             </core-header-panel>
             <core-header-panel drawer mode="seamed">

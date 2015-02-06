@@ -16,7 +16,7 @@
             }
         </style>
         <div>
-            <div>Added: {{data.time | date("hh:mm t MM-dd-yyyy") }}</div>
+            <div>Added: {{data.time}}</div>
             <div>Status: {{data.status}}</div>
             <div>{{data.link}}</div>
         </div>
@@ -30,7 +30,6 @@
             owner: "Maxwell",
             data: "",
             created: function() { },
-            ready: function() { console.log('content'); },
             attributeChanged: function(attrName, oldVal, newVal) { },
             commentSubmitEvent: function() { }
         });

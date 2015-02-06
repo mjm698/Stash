@@ -1,7 +1,6 @@
 import django
 from django.utils import timezone
 from polymer.models import *
-
 django.setup()
 
 maxwell = User(name='maxwell', email='maxwell.mosley@gmail.com')
@@ -42,13 +41,18 @@ poopyStash.users.add(maxwell, ishita)
 imgurContent = Content(user=maxwell, stash=poopyStash, link='www.imgur.com', time=timezone.now(), updateTime=timezone.now())
 imgurContent.save()
 
-googleContent = Content(user=ishita, stash=poopyStash, link='www.google.com', time=timezone.now() - datetime.timedelta(hours=1), updateTime=timezone.now() - datetime.timedelta(hours=1))
+googleContent = Content(user=ishita, stash=poopyStash, link='www.google.com', time=timezone.now() - datetime.timedelta(minutes=30), updateTime=timezone.now() - datetime.timedelta(minutes=1))
 googleContent.save()
+
+poopyContent = Content(user=ishita, stash=poopyStash, link='www.poopy.com', time=timezone.now() - datetime.timedelta(minutes=20), updateTime=timezone.now() - datetime.timedelta(minutes=10))
+poopyContent.save()
 
 Status(user=maxwell, content=imgurContent, status=3).save()
 Status(user=maxwell, content=googleContent, status=3).save()
+Status(user=maxwell, content=poopyContent, status=2).save()
 Status(user=ishita, content=imgurContent, status=4).save()
 Status(user=ishita, content=googleContent, status=2).save()
+Status(user=ishita, content=poopyContent, status=1).save()
 
 Comment(user=ishita, content=imgurContent, text='why did you share this?', time=timezone.now()).save()
 Comment(user=ishita, content=googleContent, text='why did you share this one too?', time=timezone.now()).save()

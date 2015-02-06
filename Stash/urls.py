@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'polymer.views.home', name='home'),
     url(r'^stash/$', 'polymer.views.stash', name='stash'),
+    url(r'^content/$', 'polymer.views.content', name='content'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
