@@ -22,6 +22,7 @@
     "webcomponentsjs": "~0.5.4",
     "polymer-filters": "~0.1.1",
     "paper-input": "Polymer/paper-input#~0.5.4",
-    "ajax-form": "~1.5.2"
+    "ajax-form": "~1.5.2",
+    "paper-dialog": "Polymer/paper-dialog#~0.5.4"
   }
 }

@@ -1,0 +1,53 @@
+<link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/paper-dialog/paper-action-dialog.html">
+<link rel="import" href="/static/components/paper-input/paper-input-decorator.html">
+<link rel="import" href="/static/components/paper-button/paper-button.html">
+<link rel="import" href="/static/components/core-input/core-input.html">
+<link rel="import" href="/static/components/core-list/core-list.html">
+<link rel="import" href="user-list.html">
+
+<polymer-element name="new-stash-element" attributes="userId newStash">
+    <template>
+        <style>
+            :host {
+                display: block;
+                margin-right: 5px;
+            }
+        </style>
+        <core-ajax id="postStash"
+                   auto="false"
+                   method="post"
+                   url="/stash/"
+                   headers='{"EMAIL":"{{ userId }}"}'
+                   on-core-response="{{ postSuccess }}"
+                   response="{{ newStash }}"
+                   body='{"stashName": "{{name}}", "time":"{{time}}", "users":"{{ users }}" }'
+                   handleAs="json">
+        </core-ajax>
+        <paper-action-dialog id='dialog' header='new stash'>
+            <paper-input-decorator label="Name">
+                <input id='nameInput' is='core-input' value={{name}}>
+            </paper-input-decorator>
+            <user-list id='user-list'> </user-list>
+            <paper-button on-click="{{save}}">Save</paper-button>
+            <paper-button on-click="{{cancel}}">Cancel</paper-button>
+        </paper-action-dialog>
+    </template>
+    <script>
+        Polymer({
+            name: "",
+            toggle: function() { this.$.dialog.toggle(); },
+            save: function() 
+            {
+                this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
+                this.time = new Date();
+                this.$.postStash.go();
+                this.$.dialog.close();
+            },
+            cancel: function()
+            {
+                this.$.dialog.close();
+            }
+        });
+    </script>
+</polymer-element>

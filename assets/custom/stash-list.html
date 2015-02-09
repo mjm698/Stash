@@ -1,12 +1,25 @@
 <link rel="import" href="/static/components/polymer/polymer.html">
 <link rel="import" href="/static/components/core-ajax/core-ajax.html">
+<link rel="import" href="/static/components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/static/components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="stash-element.html">
+<link rel="import" href="new-stash-element.html">
 
 <polymer-element name="stash-list" attributes="userId loadStash selectedStash">
     <template>
         <style>
             stash-element {
-                margin: 10px auto;
+                margin: 10px 0;
+            }
+            .paper-icon-div {
+                display: block;
+                background-color: white;
+                margin: 0px;
+            }
+            paper-icon-button {
+                display: relative;
+                left: 50%;
+                margin-left: -10%;
             }
         </style>
         <core-ajax id="getStashes"
@@ -21,6 +34,13 @@
             <template repeat="{{stash in stashes}}">
                 <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}"></stash-element>
             </template>
+            <div class='paper-icon-div'>
+                <paper-icon-button icon='add' on-click="{{addNewStash}}"></paper-icon-button> 
+                <new-stash-element id='newStash' opened='true' userId="{{userId}}"></new-stash-element>
+                <paper-action-dialog id='dialog' heading='new stash' opened=false>
+                    <p> some content </p>
+                </paper-action-dialog>
+            </div>
         </div>
     </template>
     <script>
@@ -28,6 +48,11 @@
             loadStash: function(e, someBool, element)
             {
                 this.fire('loadStash', {id: element.stash.id, name: element.stash.name, userId: this.userId});
+            },
+
+            addNewStash: function()
+            {
+                this.$.newStash.toggle();
             }
         });
     </script>

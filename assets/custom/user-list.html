@@ -1,4 +1,5 @@
 <link rel="import" href="/static/components/polymer/polymer.html">
+<link rel="import" href="/static/components/core-list/core-list.html">
 <link rel="import" href="user-element.html">
 
 <polymer-element name="user-list" attributes="users">
@@ -10,16 +11,24 @@
             p {
                 margin: 0px;
             }
+            core-list {
+                height: 100px;
+            }
         </style>
         <div layout horizontal>
-            <template repeat="{{user in users}}">
-                <user-element>
-                    <p>{{user.name}}</p>
-                </user-element>
-            </template>
+            <core-list data="{{users}}">
+                <template>
+                    <div class='item'>{{model}}</div>
+                </template>
+            </core-list>
         </div>
     </template>
     <script>
-        Polymer({ });
+        Polymer({ 
+            addUser: function(user)
+            {
+                
+            }
+        });
     </script>
 </polymer-element>
