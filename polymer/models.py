@@ -16,7 +16,7 @@ class Stash(models.Model):
     users = models.ManyToManyField(User) 
 
     name = models.CharField(max_length=50)
-    time = models.DateTimeField('date created')
+    time = models.DateTimeField('date created', null=True)
 
     def __unicode__(self):
         return u'%s -  %s' % (self.owner.name, self.name)

@@ -11,10 +11,22 @@
             stash-element {
                 margin: 10px 0;
             }
+            #stash-list {
+                margin-bottom: -56px;
+            }
+            .delete-stash-element {
+                visibility: hidden;
+            }
+            #stash-list:hover .delete-stash-element{
+                display: relative;
+                visibility: initial;
+                top: -50px;
+            }
             .paper-icon-div {
                 display: block;
                 background-color: white;
                 margin: 0px;
+                margin-top: 50px;
             }
             paper-icon-button {
                 display: relative;
@@ -30,16 +42,24 @@
                    response="{{stashes}}"
                    handleAs="json">
         </core-ajax>
+        <core-ajax id="deleteStash"
+                   auto="false"
+                   method="post"
+                   url="/stash/"
+                   response="{{removedStash}}"
+                   body='{"stashID": "{{stashID}}" }'
+                   handleAs="json">
+        </core-ajax>
         <div>
             <template repeat="{{stash in stashes}}">
-                <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}"></stash-element>
+                <div id='stash-list'>
+                    <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}" removedStash="{{removedStash}}"></stash-element>
+                    <paper-icon-button class='delete-stash-element' on-click="{{deleteStash}}" data-incby="{{stash.id}}" icon="delete"></paper-icon-button>
+                </div>
             </template>
             <div class='paper-icon-div'>
                 <paper-icon-button icon='add' on-click="{{addNewStash}}"></paper-icon-button> 
-                <new-stash-element id='newStash' opened='true' userId="{{userId}}"></new-stash-element>
-                <paper-action-dialog id='dialog' heading='new stash' opened=false>
-                    <p> some content </p>
-                </paper-action-dialog>
+                <new-stash-element id='newStash' opened='true' userId="{{userId}}" newStash="{{newStash}}"></new-stash-element>
             </div>
         </div>
     </template>
@@ -47,9 +67,27 @@
         Polymer({
             loadStash: function(e, someBool, element)
             {
+                console.log(e);
                 this.fire('loadStash', {id: element.stash.id, name: element.stash.name, userId: this.userId});
             },
-
+            newStashChanged: function(oldValue)
+            {
+                this.stashes.push(this.newStash);
+            },
+            deleteStash: function(event, detail, target)
+            {
+                this.stashID = target.attributes['data-incby'].value; 
+                console.log(this.stashID);
+                this.$.deleteStash.go();
+                for(var index = 0; index<this.stashes.length; ++index)
+                {
+                    if(this.stashes[index].id === this.stashID)
+                    {
+                        this.stashes.splice(index, 1)
+                        break;
+                    }
+                }
+            },
             addNewStash: function()
             {
                 this.$.newStash.toggle();

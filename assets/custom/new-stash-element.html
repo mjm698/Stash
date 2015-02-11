@@ -2,8 +2,6 @@
 <link rel="import" href="/static/components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="/static/components/paper-input/paper-input-decorator.html">
 <link rel="import" href="/static/components/paper-button/paper-button.html">
-<link rel="import" href="/static/components/core-input/core-input.html">
-<link rel="import" href="/static/components/core-list/core-list.html">
 <link rel="import" href="user-list.html">
 
 <polymer-element name="new-stash-element" attributes="userId newStash">
@@ -21,7 +19,7 @@
                    headers='{"EMAIL":"{{ userId }}"}'
                    on-core-response="{{ postSuccess }}"
                    response="{{ newStash }}"
-                   body='{"stashName": "{{name}}", "time":"{{time}}", "users":"{{ users }}" }'
+                   body="{{ postBody }}"
                    handleAs="json">
         </core-ajax>
         <paper-action-dialog id='dialog' header='new stash'>
@@ -36,11 +34,13 @@
     <script>
         Polymer({
             name: "",
+            postBody: null,
             toggle: function() { this.$.dialog.toggle(); },
             save: function() 
             {
                 this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
                 this.time = new Date();
+                this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });
                 this.$.postStash.go();
                 this.$.dialog.close();
             },
