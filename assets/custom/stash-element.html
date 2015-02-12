@@ -8,6 +8,7 @@
                 display: block;
                 position: relative;
                 background-color: white;
+                height: 120px;
             }
             h2 {
                 margin: 0px;
@@ -15,7 +16,7 @@
         </style>
         <div class="stash-element" layout vertical center>
             <h2>{{stash.name}}</h2>
-            <user-list users={{stash.owner}}></user-list>
+            <user-list users={{stash.users}}></user-list>
         </div>
     </template>
     <script>

@@ -1,4 +1,0 @@
-[{% for item in content %}
-    {% include "content.json" with content=item%}{%if not forloop.last%},{%endif%}
-{% endfor %}
-]

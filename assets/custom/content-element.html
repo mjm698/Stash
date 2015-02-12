@@ -15,22 +15,55 @@
                 margin: auto 10px;
             }
         </style>
+        <core-ajax id="archiveContent"
+                   auto="false"
+                   method="post"
+                   url="/content/"
+                   body='{"contentID" : "{{data.id}}",
+                          "type" : "archive" }'
+                   on-core-response="{{contentArchived}}">
+        </core-ajax>
+        <core-ajax id="deleteContent"
+                   auto="false"
+                   method="post"
+                   url="/content/"
+                   body='{"contentID" : "{{data.id}}",
+                          "type" : "delete" }'
+                   on-core-response="{{contentDeleted}}">
+        </core-ajax>
         <div>
             <div>Added: {{data.time}}</div>
             <div>Status: {{data.status}}</div>
             <div>{{data.link}}</div>
         </div>
-        <paper-icon-button title='Archive' icon='done'></paper-icon-button>
-        <paper-icon-button title='View original' icon='pageview'></paper-icon-button>
-        <paper-icon-button title='Delete' icon='delete'></paper-icon-button>
+        <paper-icon-button title='Archive' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
+        <paper-icon-button title='View original' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
+        <paper-icon-button title='Delete' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
         <comment-list comments="{{data.comments}}"></comment-list>
     </template>
     <script>
         Polymer('content-element', {
-            owner: "Maxwell",
-            data: "",
-            created: function() { },
             attributeChanged: function(attrName, oldVal, newVal) { },
+            archiveContent: function()
+            {
+                this.$.archiveContent.go();
+            },
+            contentArchived: function()
+            {
+                this.fire('hideContent', {id: this.data.id}); 
+            },
+            deleteContent: function()
+            {
+                this.$.deleteContent.go();
+            },
+            contentDeleted: function()
+            {
+                this.fire('hideContent', {id: this.data.id}); 
+            },
+            openContent: function()
+            {
+                console.log('open');
+            },
             commentSubmitEvent: function() { }
         });
     </script>

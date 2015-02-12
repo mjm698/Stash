@@ -18,6 +18,7 @@
                    url="/stash/"
                    headers='{"EMAIL":"{{ userId }}"}'
                    on-core-response="{{ postSuccess }}"
+                   on-core-error="{{ coreError }} "
                    response="{{ newStash }}"
                    body="{{ postBody }}"
                    handleAs="json">
@@ -34,19 +35,36 @@
     <script>
         Polymer({
             name: "",
+            _this: null,
             postBody: null,
+            ready: function() {
+                _this = this;
+                this.$.dialog.addEventListener('core-overlay-close-completed', this.clearDialog);
+            },
             toggle: function() { this.$.dialog.toggle(); },
-            save: function() 
+            coreError: function()
             {
-                this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
-                this.time = new Date();
-                this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });
-                this.$.postStash.go();
-                this.$.dialog.close();
+                console.log('error of the core');
             },
             cancel: function()
             {
                 this.$.dialog.close();
+            },
+            save: function() 
+            {
+                if(this.name !== "")
+                {
+                    this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
+                    this.time = new Date();
+                    this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });
+                    this.$.postStash.go();
+                }
+                this.$.dialog.close();
+            },
+            clearDialog: function()
+            {
+                _this.$.nameInput.value = null;
+                _this.name = null;
             }
         });
     </script>

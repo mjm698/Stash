@@ -1,15 +1,15 @@
 <link rel="import" href="/static/components/polymer/polymer.html">
 
-<polymer-element name="user-element">
+<polymer-element name="user-element" attributes="user">
     <template>
         <style>
             :host {
                 display: block;
-                margin-right: 5px;
+                padding-left: 40px;
             }
         </style>
         <div>
-            <content></content>
+            {{user.id}} - {{user.name}}
         </div>
     </template>
     <script>

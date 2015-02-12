@@ -1,7 +1,0 @@
-{
-    "user":"{{content.user}}",
-    "time":"{{content.time}}",
-    "updateTime":"{{content.updateTime}}",
-    "link":"{{content.link}}",
-    "id":"{{content.id}}"
-}

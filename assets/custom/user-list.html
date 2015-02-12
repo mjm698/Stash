@@ -7,18 +7,16 @@
         <style>
             :host {
                 display: block;
-            }
-            p {
-                margin: 0px;
+                width: 100%;
             }
             core-list {
-                height: 100px;
+                height: 75px;
             }
         </style>
-        <div layout horizontal>
+        <div class="hasHeight">
             <core-list data="{{users}}">
                 <template>
-                    <div class='item'>{{model}}</div>
+                    <user-element user={{model}}></user-element>
                 </template>
             </core-list>
         </div>

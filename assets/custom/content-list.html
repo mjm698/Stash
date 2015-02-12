@@ -28,6 +28,21 @@
     </template>
     <script>
         Polymer({ 
+            ready: function()
+            {
+                this.addEventListener('hideContent', this.hideContent)
+            },
+            hideContent: function(e)
+            {
+                for(var index = 0; index < this.data.length; ++index)
+                {
+                    if(e.detail.id == this.data[index].id)
+                    {
+                        this.data.splice(index, 1);
+                        break;
+                    }
+                }
+            }
         });
     </script>
 </polymer-element>

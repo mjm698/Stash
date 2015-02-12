@@ -11,6 +11,12 @@ class User(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.name, self.email)
 
+    def to_json(self):
+        return {
+                'id' : self.id,
+                'name' : self.name
+                }
+
 class Stash(models.Model):
     owner = models.ForeignKey(User, related_name='owner')
     users = models.ManyToManyField(User) 
@@ -20,6 +26,14 @@ class Stash(models.Model):
 
     def __unicode__(self):
         return u'%s -  %s' % (self.owner.name, self.name)
+    
+    def to_json(self):
+        return {
+                'id' : self.id,
+                'name' : self.name,
+                'time' : self.time.ctime(),
+                'owner' : {'name': self.owner.name, 'id': self.owner.id},
+                'users' : [u.to_json() for u in self.users.all()] }
 
 class Content(models.Model):
     user = models.ForeignKey(User)
@@ -32,14 +46,24 @@ class Content(models.Model):
     def __unicode__(self):
         return u'%s by: %s' % (self.link, self.user.name)
 
+    def to_json(self, user):
+        return {
+                'id' : self.id,
+                'user' : self.user.to_json(),
+                'time' : self.time.ctime(),
+                'updateTime' : self.updateTime.ctime(),
+                'link' : self.link,
+                'status' : Status.objects.filter(content = self).get(user=user).to_json()
+                }
+
 class Status(models.Model):
     user = models.ForeignKey(User)
     content = models.ForeignKey(Content)
 
-    NEW_STATUS = 1
-    VIEWED_STATUS = 2
-    UPDATED_STATUS = 3
-    ARCHIVED_STATUS = 4
+    NEW_STATUS = 0
+    VIEWED_STATUS = 1
+    UPDATED_STATUS = 2
+    ARCHIVED_STATUS = 3
     CHOICES = (
         (NEW_STATUS, 'New'),
         (VIEWED_STATUS, 'Viewed'),
@@ -50,6 +74,9 @@ class Status(models.Model):
 
     def __unicode__(self):
         return u'%s -  %s' % (self.user.name, self.status)
+
+    def to_json(self):
+        return self.CHOICES[self.status][1]
 
 class Comment(models.Model):
     user = models.ForeignKey(User)

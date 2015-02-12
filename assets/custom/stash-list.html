@@ -67,25 +67,42 @@
         Polymer({
             loadStash: function(e, someBool, element)
             {
-                console.log(e);
                 this.fire('loadStash', {id: element.stash.id, name: element.stash.name, userId: this.userId});
             },
-            newStashChanged: function(oldValue)
+            newStashChanged: function(oldValue, newValue)
             {
-                this.stashes.push(this.newStash);
+                if(newValue !== null && newValue !== "")
+                { 
+                    if('empty' in newValue) { }
+                    else { this.stashes.push(this.newStash); }
+                }
             },
             deleteStash: function(event, detail, target)
             {
+                var index;
                 this.stashID = target.attributes['data-incby'].value; 
-                console.log(this.stashID);
                 this.$.deleteStash.go();
-                for(var index = 0; index<this.stashes.length; ++index)
+                for(index = 0; index<this.stashes.length; ++index)
                 {
-                    if(this.stashes[index].id === this.stashID)
+                    // == because different types
+                    if(this.stashes[index].id == this.stashID)
                     {
-                        this.stashes.splice(index, 1)
+                        this.stashes.splice(index, 1);
                         break;
                     }
+                }
+
+                //if current stash is selected, we need to select a different one
+                // == because different types
+                if(this.selectedStash == this.stashID)
+                {
+                    if(index === 0)
+                    {
+                        //todo
+                    }
+                    else { index = index - 1; }
+                    var stash = this.stashes[index];
+                    this.fire('loadStash', {id: stash.id, name: stash.name, userId: this.userId});
                 }
             },
             addNewStash: function()
