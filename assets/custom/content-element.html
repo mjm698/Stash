@@ -2,7 +2,7 @@
 <link rel="import" href="/static/components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="comment-list.html">
 
-<polymer-element name="content-element" attributes="data">
+<polymer-element name="content-element" attributes="data userId">
     <template>
         <style>
             :host {
@@ -18,16 +18,16 @@
         <core-ajax id="archiveContent"
                    auto="false"
                    method="post"
-                   url="/content/"
-                   body='{"contentID" : "{{data.id}}",
+                   url="/update/"
+                   body='{"contentId" : "{{data.id}}",
                           "type" : "archive" }'
                    on-core-response="{{contentArchived}}">
         </core-ajax>
         <core-ajax id="deleteContent"
                    auto="false"
                    method="post"
-                   url="/content/"
-                   body='{"contentID" : "{{data.id}}",
+                   url="/update/"
+                   body='{"contentId" : "{{data.id}}",
                           "type" : "delete" }'
                    on-core-response="{{contentDeleted}}">
         </core-ajax>
@@ -39,11 +39,10 @@
         <paper-icon-button title='Archive' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
         <paper-icon-button title='View original' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
         <paper-icon-button title='Delete' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
-        <comment-list comments="{{data.comments}}"></comment-list>
+        <comment-list comments="{{data.comments}}" contentId={{data.id}} userId={{userId}}></comment-list>
     </template>
     <script>
         Polymer('content-element', {
-            attributeChanged: function(attrName, oldVal, newVal) { },
             archiveContent: function()
             {
                 this.$.archiveContent.go();

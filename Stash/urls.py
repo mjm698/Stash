@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^$', 'polymer.views.home', name='home'),
     url(r'^stash/$', 'polymer.views.stash', name='stash'),
     url(r'^content/$', 'polymer.views.content', name='content'),
+    url(r'^comment/$', 'polymer.views.comment', name='comment'),
+    url(r'^update/$', 'polymer.views.update', name='update'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

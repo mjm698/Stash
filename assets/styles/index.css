@@ -11,6 +11,12 @@ core-toolbar {
     background: #03a9f4;
     color: white;
 }
+#addStashButton
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
 div.stashContainer
 {
     padding-left: 10px;

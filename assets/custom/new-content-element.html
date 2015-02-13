@@ -4,7 +4,7 @@
 <link rel="import" href="/static/components/paper-button/paper-button.html">
 <link rel="import" href="user-list.html">
 
-<polymer-element name="new-stash-element" attributes="userId newStash">
+<polymer-element name="new-content-element" attributes="userId stashId newContent">
     <template>
         <style>
             :host {
@@ -12,54 +12,58 @@
                 margin-right: 5px;
             }
         </style>
-        <core-ajax id="postStash"
+        <core-ajax id="postContent"
                    auto="false"
                    method="post"
-                   url="/stash/"
+                   url="/content/"
                    headers='{"USERID":"{{ userId }}"}'
                    on-core-response="{{ postSuccess }}"
                    on-core-error="{{ coreError }} "
-                   response="{{ newStash }}"
+                   response="{{ newContent }}"
                    body="{{ postBody }}"
                    handleAs="json">
         </core-ajax>
-        <paper-action-dialog id='dialog' header='new stash'>
-            <paper-input-decorator labelVisible='{{name === ""}}' label="Name">
-                <input id='nameInput' is='core-input' value={{name}}>
+        <paper-action-dialog id='dialog' header='new content'>
+            <paper-input-decorator label="Link" labelVisible='{{link === ""}}'>
+                <input id='linkInput' is='core-input' value={{link}}>
             </paper-input-decorator>
-            <user-list id='user-list'> </user-list>
-            <paper-button on-click="{{save}}">Save</paper-button>
+            <paper-button on-click="{{add}}">Add</paper-button>
             <paper-button on-click="{{cancel}}">Cancel</paper-button>
         </paper-action-dialog>
     </template>
     <script>
         Polymer({
-            name: "",
             _this: null,
+            link: "",
             postBody: null,
             ready: function() {
                 _this = this;
-                //this.$.dialog.addEventListener('core-overlay-close-completed', this.clearDialog);
+                this.$.dialog.addEventListener('core-overlay-close-completed', this.clearDialog);
             },
             toggle: function() { this.$.dialog.toggle(); },
             coreError: function()
             {
                 console.log('error of the core');
             },
+            postSuccess: function()
+            {
+                this.fire('addNewContent', {content: this.newContent});
+            },
             cancel: function()
             {
-                this.name = "";
+                this.link = "";
                 this.$.dialog.close();
             },
-            save: function() 
+            add: function() 
             {
-                if(this.name !== "")
+                console.log(this.stashId);
+                if(this.link !== "")
                 {
-                    this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
                     this.time = new Date();
-                    this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });
-                    this.$.postStash.go();
+                    this.postBody = JSON.stringify({ "stashId":this.stashId, "time":this.time, "link":this.link });
+                    this.$.postContent.go();
                 }
+                this.link = "";
                 this.$.dialog.close();
             }
         });

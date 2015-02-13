@@ -21,7 +21,7 @@
             }
         </style>
         <div>
-            <user-element> {{comment.user.name}} </user-element>
+            <user-element user='{{comment.user}}'> </user-element>
             <div class='commentTime'> {{comment.time | date('hh:mm t MM-dd-yyyy') }} </div>
             <div class='commentText'>{{comment.text}}</div>
         </div>

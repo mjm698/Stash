@@ -4,7 +4,7 @@
 <link rel="import" href="/static/components/paper-button/paper-button.html">
 <link rel="import" href="comment-element.html">
 
-<polymer-element name="comment-list" attributes="submitEvent comments">
+<polymer-element name="comment-list" attributes="userId contentId comments">
     <template>
         <style>
             :host {
@@ -19,31 +19,40 @@
                 overflow: auto;
             }
         </style>
-        <!--<comment-service id='service' comment="{{newComment}}"></comment-service>/-->
+        <core-ajax id='postComment'
+                   auto='false'
+                   method='post'
+                   url='/comment/'
+                   response='{{newComment}}'
+                   on-core-response="{{ postSuccess }}"
+                   body='{"userId": "{{userId}}",
+                          "contentId": "{{contentId}}",
+                          "text": "{{newText}}" }'
+                   handleAs='json'>
+        </core-ajax> 
         <div>
             <div class='comments'>
                 <template class='comments' repeat="{{comment in comments}}">
                     <comment-element comment="{{comment}}"></comment-element>
                 </template>
             </div>
-            <form id='commentForm' is="ajax-form" method="post" action="../data/commentData.json">
-                <paper-input-decorator label="Comment">
-                    <textarea rows='2' value={{newComment}}></textarea>
-                </paper-input-decorator>
-                <paper-button type='submit' id="commentButton" on-click="{{submitEvent}}">Comment</paper-button>
-            </form>
+            <paper-input-decorator label="Comment">
+                <textarea id='commentText' rows='2' value={{newText}}></textarea>
+            </paper-input-decorator>
+            <paper-button type='submit' id="commentButton" on-click="{{submitComment}}">Comment</paper-button>
         </div>
     </template>
     <script>
         Polymer({
-            submitEvent: function()
-            {
-                console.log("submit " + this.newComment);
-                this.$.commentForm.submit();
-            },
             submitComment: function()
             {
-                console.log("new comment");
+                this.$.postComment.go();
+            },
+            postSuccess: function()
+            {
+                this.comments.push(this.newComment);
+                this.newText = "";
+                this.$.commentText.value = "";
             }
         });
     </script>

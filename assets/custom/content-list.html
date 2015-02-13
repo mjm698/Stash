@@ -2,7 +2,7 @@
 <link rel="import" href="/static/components/core-ajax/core-ajax.html">
 <link rel="import" href="content-element.html">
 
-<polymer-element name="content-list" attributes="stashId userId">
+<polymer-element name="content-list" attributes="stashId userId newContent">
     <template>
         <style>
             :host { }
@@ -14,15 +14,15 @@
                    auto
                    method="get"
                    url="/content/"
-                   headers='{"EMAIL":"{{ userId }}",
-                             "STASHID":"{{ stashId }}"}'
-                   response="{{data}}"
+                   headers='{"USERID":"{{ userId }}",
+                             "STASHID": "{{ stashId }}"}'
                    params='{"stashId":"{{ stashId}}"}'
+                   response="{{data}}"
                    handleAs="json">
         </core-ajax>
         <div layout vertical center>
             <template repeat="{{content in data}}">
-                <content-element data={{content}}></content-element>
+                <content-element data={{content}} userId={{userId}}></content-element>
             </template>
         </div>
     </template>
@@ -31,6 +31,7 @@
             ready: function()
             {
                 this.addEventListener('hideContent', this.hideContent)
+                this.addEventListener('addNewContent', this.addNewContent)
             },
             hideContent: function(e)
             {
@@ -41,6 +42,13 @@
                         this.data.splice(index, 1);
                         break;
                     }
+                }
+            },
+            newContentChanged: function(oldValue, newValue)
+            {
+                if(newValue)
+                {
+                    this.data.push(newValue);
                 }
             }
         });

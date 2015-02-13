@@ -53,7 +53,8 @@ class Content(models.Model):
                 'time' : self.time.ctime(),
                 'updateTime' : self.updateTime.ctime(),
                 'link' : self.link,
-                'status' : Status.objects.filter(content = self).get(user=user).to_json()
+                'status' : Status.objects.filter(content = self).get(user=user).to_json(),
+                'comments' : [c.to_json() for c in Comment.objects.filter(content = self)]
                 }
 
 class Status(models.Model):
@@ -84,10 +85,17 @@ class Comment(models.Model):
 
     text = models.TextField()
     time = models.DateTimeField('date commented')
-    # do i need stash and content too?
 
     def was_commented_recently(self):
         return self.time >= timezone.now() - datetime.timedelta(days=1)
 
     def __unicode__(self):
         return u'%s - %s' % (self.user.name, self.text)
+
+    def to_json(self):
+        return {
+                'id' : self.id,
+                'user' : self.user.to_json(),
+                'time' : self.time.ctime(),
+                'text' : self.text
+                }
