@@ -39,7 +39,8 @@
                    method="get"
                    url="/stash/"
                    headers='{"USERID":"{{ userId }}"}'
-                   response="{{stashes}}"
+                   response="{{data}}"
+                   on-core-response="{{stashesLoaded}}"
                    handleAs="json">
         </core-ajax>
         <core-ajax id="deleteStash"
@@ -50,8 +51,17 @@
                    body='{"stashID": "{{stashID}}" }'
                    handleAs="json">
         </core-ajax>
+        <core-ajax id="logout"
+                   auto="false"
+                   method="post"
+                   url="/logout/"
+                   response="{{response}}"
+                   body='{"selectedStash": "{{selectedStash}}" }'
+                   on-core-response="{{logoutSuccessful}}"
+                   handleAs="json">
+        </core-ajax>
         <div>
-            <template repeat="{{stash in stashes}}">
+            <template repeat="{{stash in data.stashes}}">
                 <div id='stash-list'>
                     <stash-element stash="{{stash}}" on-click="{{loadStash}}" id="{{stash.id}}" selected="{{stash.id === selectedStash}}" removedStash="{{removedStash}}"></stash-element>
                     <paper-icon-button class='delete-stash-element' on-click="{{deleteStash}}" data-incby="{{stash.id}}" icon="delete"></paper-icon-button>
@@ -60,6 +70,7 @@
             <div class='paper-icon-div'>
                 <paper-icon-button icon='add' on-click="{{addNewStash}}"></paper-icon-button> 
                 <new-stash-element id='newStash' opened='true' userId="{{userId}}" newStash="{{newStash}}"></new-stash-element>
+                <paper-button on-click="{{logout}}">Logout</paper-button> 
             </div>
         </div>
     </template>
@@ -74,7 +85,7 @@
                 if(newValue !== null && newValue !== "")
                 { 
                     if('empty' in newValue) { }
-                    else { this.stashes.push(this.newStash); }
+                    else { this.data.stashes.push(this.newStash); }
                 }
             },
             deleteStash: function(event, detail, target)
@@ -82,12 +93,12 @@
                 var index;
                 this.stashID = target.attributes['data-incby'].value; 
                 this.$.deleteStash.go();
-                for(index = 0; index<this.stashes.length; ++index)
+                for(index = 0; index<this.data.stashes.length; ++index)
                 {
                     // == because different types
-                    if(this.stashes[index].id == this.stashID)
+                    if(this.data.stashes[index].id == this.stashID)
                     {
-                        this.stashes.splice(index, 1);
+                        this.data.stashes.splice(index, 1);
                         break;
                     }
                 }
@@ -101,13 +112,30 @@
                         //todo
                     }
                     else { index = index - 1; }
-                    var stash = this.stashes[index];
+                    var stash = this.data.stashes[index];
                     this.fire('loadStash', {id: stash.id, name: stash.name, userId: this.userId});
                 }
             },
             addNewStash: function()
             {
                 this.$.newStash.toggle();
+            },
+            logout: function()
+            {
+                this.$.logout.go();
+            },
+            logoutSuccessful: function()
+            {
+                window.location.href = "/";
+            },
+            stashesLoaded: function()
+            {
+                console.log(this.data.prevStash.id);
+                this.selectedStash = this.data.prevStash.id;
+            },
+            detached: function()
+            {
+                console.log("detached");
             }
         });
     </script>

@@ -3,7 +3,8 @@ from django.shortcuts import render_to_response, redirect, RequestContext, HttpR
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from polymer.models import *
 
 @csrf_exempt
 def login_user(request):
@@ -30,6 +31,19 @@ def login_user(request):
             resp = {"login":False, "errors":errors}
             return HttpResponse(status=200, content_type='application/json', content=json.dumps(resp))
     return render_to_response("login.html", {'errors': errors}, RequestContext(request))
+
+@csrf_exempt
+def logout_user(request):
+    if request.method == "POST":
+        post = json.loads(request.body.decode('utf-8'))
+        if 'selectedStash' in post:
+            previousStash = PreviousStash.objects.get(user = request.user)
+            selectedStash = Stash.objects.get(pk=post['selectedStash'])
+            previousStash.stash_id = selectedStash
+            previousStash.save()
+        logout(request)
+        resp = {"login":False}
+        return HttpResponse(status=200, content_type='application/json', content=json.dumps(resp))
 
 @csrf_exempt
 def register(request):

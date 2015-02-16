@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^$', 'polymer.views.home', name='home'),
 
     url(r'^login/$', 'login.views.login_user', name='login'),
+    url(r'^logout/$', 'login.views.logout_user', name='logout'),
     url(r'^register/$', 'login.views.register', name='register'),
 
     url(r'^stash/$', 'polymer.views.stash', name='stash'),

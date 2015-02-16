@@ -15,8 +15,10 @@ def stash(request):
     thisUser = request.user
     if request.method == "GET":
         stashes = Stash.objects.filter(users = thisUser)
+        previousStash = PreviousStash.objects.get(user = thisUser)
         return HttpResponse(status=200, content_type='application/json',
-                            content=json.dumps([s.to_json() for s in stashes], ensure_ascii=False))
+                content=json.dumps({'stashes' : [s.to_json() for s in stashes],
+                                    'prevStash' : previousStash.to_json()}, ensure_ascii=False))
     elif request.method == "POST":
         newBody = json.loads(request.body)
 
@@ -26,6 +28,10 @@ def stash(request):
         name = newBody["stashName"]
         stash,created = Stash.objects.get_or_create(owner= thisUser, name = name)
         if created:
+            prev,prevCreated = PreviousStash.objects.get_or_create(user = thisUser)
+            if prevCreated:
+                prev.stash = stash
+                prev.save()
             stash.time = datetime.datetime.now()
             stash.save()
             userEmails = newBody["users"]
@@ -57,7 +63,6 @@ def comment(request):
 @login_required(login_url='/login/')
 @csrf_exempt
 def content(request):
-    #todo: remove email and use user object instead
     thisUser = request.user
 
     if 'HTTP_STASHID' in request.META:

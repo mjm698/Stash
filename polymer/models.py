@@ -12,7 +12,7 @@ class Stash(models.Model):
     time = models.DateTimeField('date created', null=True)
 
     def __unicode__(self):
-        return u'%s -  %s' % (self.owner.name, self.name)
+        return u'%s -  %s' % (self.owner.get_username(), self.name)
     
     def to_json(self):
         return {
@@ -87,3 +87,12 @@ class Comment(models.Model):
                 'time' : self.time.ctime(),
                 'text' : self.text
                 }
+
+class PreviousStash(models.Model):
+    user = models.ForeignKey(User)
+    stash = models.ForeignKey(Stash, null=True)
+
+    def to_json(self):
+        return {
+                'id' : self.stash.id
+               }
