@@ -1,19 +1,18 @@
 import json
 from django.shortcuts import render, render_to_response, RequestContext, HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from polymer.models import *
 
+@login_required(login_url='/login/')
 def home(request):
     return render_to_response('index.html', {}, RequestContext(request))
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def stash(request):
-    if 'HTTP_USERID' in request.META:
-        userId = request.META['HTTP_USERID']
-    else:
-        userId = '1'
-    thisUser = User.objects.get(pk=userId)
+    thisUser = request.user
     if request.method == "GET":
         stashes = Stash.objects.filter(users = thisUser)
         return HttpResponse(status=200, content_type='application/json',
@@ -25,14 +24,14 @@ def stash(request):
             return deleteStash(request, newBody["stashID"])
         
         name = newBody["stashName"]
-        stash,created = Stash.objects.get_or_create(owner_id = userId, name = name)
+        stash,created = Stash.objects.get_or_create(owner= thisUser, name = name)
         if created:
             stash.time = datetime.datetime.now()
             stash.save()
             userEmails = newBody["users"]
             users = [thisUser]
-            for email in userEmails:
-                user = User.objects.get(email=email)
+            for name in userEmails:
+                user = User.objects.get(username=name)
                 users.append(user)
             stash.users.add(*users)
             return HttpResponse(status=200, content_type='application/json',
@@ -40,31 +39,31 @@ def stash(request):
         else:
             return returnEmpty()
 
+@login_required(login_url='/login/')
+@csrf_exempt
 def comment(request):
     if request.method == "POST":
         newBody = json.loads(request.body)
-        userId = newBody["userId"]
+        thisUser = request.user
         text = newBody["text"]
         time = datetime.datetime.now()
-        comment,created = Comment.objects.get_or_create(user_id = newBody["userId"], content_id = newBody["contentId"], text = text, time = time)
+        comment,created = Comment.objects.get_or_create(user = thisUser, content_id = newBody["contentId"], text = text, time = time)
         if(created):
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(comment.to_json(), ensure_ascii=False))
         else:
             return returnEmpty()
 
+@login_required(login_url='/login/')
+@csrf_exempt
 def content(request):
     #todo: remove email and use user object instead
-    if 'HTTP_USERID' in request.META:
-        userId = request.META['HTTP_USERID']
-    else:
-        userId = 1
-    thisUser = User.objects.get(pk=userId)
+    thisUser = request.user
 
     if 'HTTP_STASHID' in request.META:
         stashId = request.META['HTTP_STASHID']
     else:
-        stashId = 421412
+        stashId = 1
 
     if request.method == "GET":
         contents = Content.objects.filter(stash_id = stashId)
@@ -77,7 +76,7 @@ def content(request):
         stashId = newBody['stashId']
         link = newBody['link']
         time = datetime.datetime.now()
-        content,created = Content.objects.get_or_create(user_id = userId, time = time, link = link, stash_id = stashId, updateTime = time)
+        content,created = Content.objects.get_or_create(user = thisUser, time = time, link = link, stash_id = stashId, updateTime = time)
         if(created):
             createStati(content, stashId)
             return HttpResponse(status=200, content_type='application/json',
@@ -85,12 +84,10 @@ def content(request):
         else:
             return returnEmpty()
 
+@login_required(login_url='/login/')
+@csrf_exempt
 def update(request):
-    #todo: remove email and use user object instead
-    if 'HTTP_USERID' in request.META:
-        userId = request.META['HTTP_USERID']
-    else:
-        userId = 1
+    thisUser = request.user
 
     if request.method == "POST":
         newBody = json.loads(request.body)
@@ -104,7 +101,7 @@ def update(request):
         if(newBody['type'] == "delete"):
             content.delete()
         else:
-            status = Status.objects.filter(user_id = userId).get(content = content)
+            status = Status.objects.filter(user= thisUser).get(content = content)
             if(newBody['type'] == 'archive'):
                 status.status = Status.ARCHIVED_STATUS
             elif(newBody['type']) == "view":

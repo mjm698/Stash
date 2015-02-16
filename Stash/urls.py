@@ -12,6 +12,10 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'polymer.views.home', name='home'),
+
+    url(r'^login/$', 'login.views.login_user', name='login'),
+    url(r'^register/$', 'login.views.register', name='register'),
+
     url(r'^stash/$', 'polymer.views.stash', name='stash'),
     url(r'^content/$', 'polymer.views.content', name='content'),
     url(r'^comment/$', 'polymer.views.comment', name='comment'),

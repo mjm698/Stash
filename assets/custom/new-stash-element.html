@@ -39,7 +39,6 @@
             postBody: null,
             ready: function() {
                 _this = this;
-                //this.$.dialog.addEventListener('core-overlay-close-completed', this.clearDialog);
             },
             toggle: function() { this.$.dialog.toggle(); },
             coreError: function()
@@ -55,7 +54,8 @@
             {
                 if(this.name !== "")
                 {
-                    this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
+                    //this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
+                    this.users = [];
                     this.time = new Date();
                     this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });
                     this.$.postStash.go();

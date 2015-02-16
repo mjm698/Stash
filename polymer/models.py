@@ -2,20 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-
-# Create your models here.
-class User(models.Model):
-    name = models.CharField(max_length=20)
-    email = models.EmailField()
-
-    def __unicode__(self):
-        return u'%s %s' % (self.name, self.email)
-
-    def to_json(self):
-        return {
-                'id' : self.id,
-                'name' : self.name
-                }
+from django.contrib.auth.models import User
 
 class Stash(models.Model):
     owner = models.ForeignKey(User, related_name='owner')
@@ -32,8 +19,9 @@ class Stash(models.Model):
                 'id' : self.id,
                 'name' : self.name,
                 'time' : self.time.ctime(),
-                'owner' : {'name': self.owner.name, 'id': self.owner.id},
-                'users' : [u.to_json() for u in self.users.all()] }
+                'owner' : {'name': self.owner.get_username(), 'id': self.owner.id},
+                'users' : [{'name':u.get_username(), 'id':u.id} for u in self.users.all()] 
+                }
 
 class Content(models.Model):
     user = models.ForeignKey(User)
@@ -44,12 +32,12 @@ class Content(models.Model):
     updateTime = models.DateTimeField('date updated')
     
     def __unicode__(self):
-        return u'%s by: %s' % (self.link, self.user.name)
+        return u'%s by: %s' % (self.link, self.user.get_username())
 
     def to_json(self, user):
         return {
                 'id' : self.id,
-                'user' : self.user.to_json(),
+                'user' : self.user.get_username(),
                 'time' : self.time.ctime(),
                 'updateTime' : self.updateTime.ctime(),
                 'link' : self.link,
@@ -74,7 +62,7 @@ class Status(models.Model):
     status = models.IntegerField(choices=CHOICES, default=NEW_STATUS)
 
     def __unicode__(self):
-        return u'%s -  %s' % (self.user.name, self.status)
+        return u'%s -  %s' % (self.user.get_username(), self.status)
 
     def to_json(self):
         return self.CHOICES[self.status][1]
@@ -90,12 +78,12 @@ class Comment(models.Model):
         return self.time >= timezone.now() - datetime.timedelta(days=1)
 
     def __unicode__(self):
-        return u'%s - %s' % (self.user.name, self.text)
+        return u'%s - %s' % (self.user.get_username(), self.text)
 
     def to_json(self):
         return {
                 'id' : self.id,
-                'user' : self.user.to_json(),
+                'user' : {'name':self.user.get_username(), 'id':self.user.id},
                 'time' : self.time.ctime(),
                 'text' : self.text
                 }
