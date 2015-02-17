@@ -15,10 +15,11 @@ def stash(request):
     thisUser = request.user
     if request.method == "GET":
         stashes = Stash.objects.filter(users = thisUser)
-        previousStash = PreviousStash.objects.get(user = thisUser)
+        previousStash = PreviousStash.objects.get_or_none(user = thisUser)
         return HttpResponse(status=200, content_type='application/json',
                 content=json.dumps({'stashes' : [s.to_json() for s in stashes],
-                                    'prevStash' : previousStash.to_json()}, ensure_ascii=False))
+                                    'prevStash' : 0 if (previousStash == None) else previousStash.to_json()}, 
+                                    ensure_ascii=False))
     elif request.method == "POST":
         newBody = json.loads(request.body)
 

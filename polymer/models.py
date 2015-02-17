@@ -4,6 +4,15 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+class GetOrNoneManager(models.Manager):
+    """Adds get_or_none method to objects
+    """
+    def get_or_none(self, **kwargs):
+        try:
+            return self.get(**kwargs)
+        except self.model.DoesNotExist:
+            return None
+
 class Stash(models.Model):
     owner = models.ForeignKey(User, related_name='owner')
     users = models.ManyToManyField(User) 
@@ -91,6 +100,7 @@ class Comment(models.Model):
 class PreviousStash(models.Model):
     user = models.ForeignKey(User)
     stash = models.ForeignKey(Stash, null=True)
+    objects = GetOrNoneManager()
 
     def to_json(self):
         return {

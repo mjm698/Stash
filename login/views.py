@@ -37,10 +37,11 @@ def logout_user(request):
     if request.method == "POST":
         post = json.loads(request.body.decode('utf-8'))
         if 'selectedStash' in post:
-            previousStash = PreviousStash.objects.get(user = request.user)
-            selectedStash = Stash.objects.get(pk=post['selectedStash'])
-            previousStash.stash_id = selectedStash
-            previousStash.save()
+            if post['selectedStash'] != "":
+                previousStash = PreviousStash.objects.get(user = request.user)
+                selectedStash = Stash.objects.get(pk=post['selectedStash'])
+                previousStash.stash_id = selectedStash
+                previousStash.save()
         logout(request)
         resp = {"login":False}
         return HttpResponse(status=200, content_type='application/json', content=json.dumps(resp))
@@ -69,7 +70,7 @@ def register(request):
                 resp = {"registered":True, "errors":errors}
                 return HttpResponse(status=200, content_type='application/json', content=json.dumps(resp))
             except Exception as ex:
-                errors.append({'message': ex})
+                errors.append({'message': str(ex)})
                 resp = {"registered":False, "errors":errors}
                 return HttpResponse(status=200, content_type='application/json', content=json.dumps(resp))
         else:

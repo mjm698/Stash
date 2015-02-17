@@ -1,5 +1,6 @@
 <link rel="import" href="/static/components/polymer/polymer.html">
 <link rel="import" href="/static/components/core-ajax/core-ajax.html">
+<link rel="import" href="/static/components/core-collapse/core-collapse.html">
 <link rel="import" href="/static/components/paper-input/paper-input.html">
 <link rel="import" href="/static/components/paper-button/paper-button.html">
 <link rel="import" href="/static/components/paper-input/paper-input-decorator.html">
@@ -10,11 +11,16 @@
             :host {
                 display: block;
             }
-            #loginBut {
-                background: #4285f4;
+            #loginBut,#registerBut {
                 color: #fff;
                 padding: 5px 10px;
                 margin-right: 15px;;
+            }
+            #loginBut {
+                background: blue;
+            }
+            #registerBut {
+                background: green;
             }
             .error {
                 color:red;
@@ -30,16 +36,36 @@
                    body='{"username":"{{username}}", "password":"{{password}}"}'
                    handleAs="json">
         </core-ajax>
+        <core-ajax id='postRegister'
+                   method='post'
+                   contentType='application/json'
+                   url='/register/'
+                   on-core-response='{{registerSuccess}}'
+                   response='{{response}}'
+                   handleAs='json'
+                   body='{"username":"{{username}}", "password":"{{password}}", "email":"{{email}}", "confirm":"{{confirm}}"}'>
+        </core-ajax>
         <template repeat="{{error in response.errors}}">
             <span class="error">{{error.message}}</span>
             <br>
         </template>
-        <div class="registerDiv" layout vertical center>
+        <div class="registerDiv" layout vertical center relative>
             <paper-input label="Username" name="username" value="{{username}}"></paper-input>
+            <core-collapse id="collapseEmail">
+                <paper-input label="Email" name="email" class="register" value="{{email}}"></paper-input>
+            </core-collapse>
             <paper-input-decorator label="Password">
                 <input id="password" is="core-input" name="password" type="password" value="{{password}}"/>
             </paper-input-decorator>
-            <paper-button name="login" type="submit" id="loginBut" on-click="{{submit}}">Login</paper-button>
+            <core-collapse id="collapsePassword">
+                <paper-input-decorator class="register" label="Confirm password">
+                    <input id="confirm_password" class="register" is="core-input" name="confirm_password" type="password" value="{{confirm}}"/>
+                </paper-input-decorator>
+            </core-collapse>
+            <div layout horizontal>
+                <paper-button name="login" type="submit" id="loginBut" on-click="{{submit}}">Login</paper-button>
+                <paper-button name="register" id="registerBut" on-click="{{register}}">Register</paper-button>
+            </div>
         </div>
     </template>
     <script>
@@ -48,6 +74,26 @@
             {
                 this.$.postLogin.go();
             }, 
+            register: function() 
+            {
+                if(this.$.collapseEmail.opened)
+                {
+                    this.$.postRegister.go();
+                }
+                else
+                {
+                    this.$.collapseEmail.toggle();
+                    this.$.collapsePassword.toggle();
+                }
+            }, 
+            registerSuccess: function(element, response)
+            {
+                if(response.response.registered)
+                {
+                    this.$.collapseEmail.toggle();
+                    this.$.collapsePassword.toggle();
+                }
+            },
             loggedIn: function() {
                 if(this.response.login) 
                 {
