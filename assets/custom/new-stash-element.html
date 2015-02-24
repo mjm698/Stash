@@ -35,14 +35,11 @@
     <script>
         Polymer({
             name: "",
-            _this: null,
             postBody: null,
-            ready: function() {
-                _this = this;
-            },
             toggle: function() { this.$.dialog.toggle(); },
             coreError: function()
             {
+                //todo: display loading error
                 console.log('error of the core');
             },
             cancel: function()
@@ -54,7 +51,6 @@
             {
                 if(this.name !== "")
                 {
-                    //this.users = ["ishitaaloni@gmail.com", "bunkaroo@gmail.com"];
                     this.users = [];
                     this.time = new Date();
                     this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });

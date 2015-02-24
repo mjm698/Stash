@@ -33,14 +33,16 @@
     </template>
     <script>
         Polymer({
-            _this: null,
             link: "",
             postBody: null,
-            ready: function() {
-                _this = this;
+            ready: function() 
+            {
                 this.$.dialog.addEventListener('core-overlay-close-completed', this.clearDialog);
             },
-            toggle: function() { this.$.dialog.toggle(); },
+            toggle: function() 
+            { 
+                this.$.dialog.toggle(); 
+            },
             coreError: function()
             {
                 console.log('error of the core');

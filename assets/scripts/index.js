@@ -1,7 +1,7 @@
 main();
 function main()
 {
-    //todo: change these hardcoded things to use previous stash instead
+    //todo: change this to use previous stash instead
     document.getElementById('stashName').innerHTML = "maxwell's stash";
     var stashList = document.querySelector('stash-list');
     stashList.selectedStash = 1;
@@ -35,7 +35,7 @@ function newContent(e)
     document.querySelector('content-list').newContent = e.detail.content;
 }
 
-function showDialog(element)
+function showDialog()
 {
     document.getElementById('newContent').toggle();
 }

@@ -84,8 +84,10 @@
             {
                 if(newValue !== null && newValue !== "")
                 { 
-                    if('empty' in newValue) { }
-                    else { this.data.stashes.push(this.newStash); }
+                    if(!('empty' in newValue)) 
+                    { 
+                        this.data.stashes.push(this.newStash);
+                    }
                 }
             },
             deleteStash: function(event, detail, target)
@@ -109,7 +111,10 @@
                 {
                     if(index === 0)
                     {
-                        //todo
+                        if(this.data.stashes.length > 1)
+                        {
+                            index = 1
+                        }
                     }
                     else { index = index - 1; }
                     var stash = this.data.stashes[index];
@@ -130,12 +135,7 @@
             },
             stashesLoaded: function()
             {
-                console.log(this.data.prevStash.id);
                 this.selectedStash = this.data.prevStash.id;
-            },
-            detached: function()
-            {
-                console.log("detached");
             }
         });
     </script>
