@@ -12,15 +12,12 @@
                 display: block;
             }
             #loginBut,#registerBut {
-                color: #fff;
                 padding: 5px 10px;
                 margin-right: 15px;;
             }
             #loginBut {
-                background: blue;
             }
             #registerBut {
-                background: green;
             }
             .error {
                 color:red;
@@ -63,13 +60,14 @@
                 </paper-input-decorator>
             </core-collapse>
             <div layout horizontal>
-                <paper-button name="login" type="submit" id="loginBut" on-click="{{submit}}">Login</paper-button>
-                <paper-button name="register" id="registerBut" on-click="{{register}}">Register</paper-button>
+                <paper-button raised name="login" type="submit" id="loginBut" on-click="{{submit}}" disabled?="{{registering}}">Login</paper-button>
+                <paper-button raised name="register" id="registerBut" on-click="{{register}}">Register</paper-button>
             </div>
         </div>
     </template>
     <script>
         Polymer({
+            registering: false,
             submit: function() 
             {
                 this.$.postLogin.go();
@@ -78,20 +76,25 @@
             {
                 if(this.$.collapseEmail.opened)
                 {
-                    this.$.postRegister.go();
+                    if(this.username === "")
+                    {
+                        this.toggleRegistration(false);
+                    }
+                    else
+                    {
+                        this.$.postRegister.go();
+                    }
                 }
                 else
                 {
-                    this.$.collapseEmail.toggle();
-                    this.$.collapsePassword.toggle();
+                    this.toggleRegistration(true);
                 }
             }, 
             registerSuccess: function(element, response)
             {
                 if(response.response.registered)
                 {
-                    this.$.collapseEmail.toggle();
-                    this.$.collapsePassword.toggle();
+                    this.toggleRegistration(false);
                 }
             },
             loggedIn: function() {
@@ -99,6 +102,12 @@
                 {
                     window.location.href = "/";
                 }
+            },
+            toggleRegistration: function(registering)
+            {
+                    this.$.collapseEmail.toggle();
+                    this.$.collapsePassword.toggle();
+                    this.registering = registering;
             }
         });
     </script>

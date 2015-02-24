@@ -10,6 +10,7 @@
         <style>
             stash-element {
                 margin: 10px 0;
+                padding-top: 5px;
             }
             #stash-list {
                 margin-bottom: -56px;
@@ -22,16 +23,25 @@
                 visibility: initial;
                 top: -50px;
             }
-            .paper-icon-div {
+            .new-stash-div {
                 display: block;
                 background-color: white;
                 margin: 0px;
-                margin-top: 50px;
+                margin-top: 10px;
             }
             paper-icon-button {
                 display: relative;
                 left: 50%;
                 margin-left: -10%;
+            }
+            paper-button {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .logout-div {
+                margin-top: 10px;
+                background-color: white;
             }
         </style>
         <core-ajax id="getStashes"
@@ -67,10 +77,12 @@
                     <paper-icon-button class='delete-stash-element' on-click="{{deleteStash}}" data-incby="{{stash.id}}" icon="delete"></paper-icon-button>
                 </div>
             </template>
-            <div class='paper-icon-div'>
+            <div class='new-stash-div'>
                 <paper-icon-button icon='add' on-click="{{addNewStash}}"></paper-icon-button> 
                 <new-stash-element id='newStash' opened='true' userId="{{userId}}" newStash="{{newStash}}"></new-stash-element>
-                <paper-button on-click="{{logout}}">Logout</paper-button> 
+            </div>
+            <div class='logout-div'>
+                <paper-button id='logoutBtn' on-click="{{logout}}">Logout</paper-button> 
             </div>
         </div>
     </template>
@@ -136,6 +148,7 @@
             stashesLoaded: function()
             {
                 this.selectedStash = this.data.prevStash.id;
+                this.fire('loadStash', {id: this.data.prevStash.id, name: this.data.prevStash.name, userId: this.userId});
             }
         });
     </script>

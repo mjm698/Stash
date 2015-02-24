@@ -103,5 +103,6 @@ class PreviousStash(models.Model):
 
     def to_json(self):
         return {
-                'id' : self.stash.id
+                'id' : self.stash.id,
+                'name' : self.stash.name
                }

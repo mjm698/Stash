@@ -8,10 +8,10 @@
             :host { }
             content-element {
                 margin-top: 10px;
+                padding-left: 15px;
             }
         </style>
         <core-ajax id="getContent"
-                   auto
                    method="get"
                    url="/content/"
                    headers='{"USERID":"{{ userId }}",
@@ -43,6 +43,11 @@
                         break;
                     }
                 }
+            },
+            stashIdChanged: function(oldValue, newValue)
+            {
+                console.log('changed');
+                this.$.getContent.go();
             },
             newContentChanged: function(oldValue, newValue)
             {
