@@ -1,8 +1,6 @@
 main();
 function main()
 {
-    //todo: change this to use previous stash instead
-    document.getElementById('stashName').innerHTML = "maxwell's stash";
     var stashList = document.querySelector('stash-list');
     stashList.selectedStash = 1;
 

@@ -31,7 +31,7 @@
                    handleAs='json'>
         </core-ajax> 
         <div>
-            <div class='comments'>
+            <div id='commentsDiv' class='comments'>
                 <template class='comments' repeat="{{comment in comments}}">
                     <comment-element comment="{{comment}}"></comment-element>
                 </template>
@@ -53,6 +53,11 @@
                 this.comments.push(this.newComment);
                 this.newText = "";
                 this.$.commentText.value = "";
+            },
+            commentsChanged: function()
+            {
+                var commentsDiv = this.$.commentsDiv
+                commentsDiv.scrollTop = commentsDiv.scrollHeight;
             }
         });
     </script>

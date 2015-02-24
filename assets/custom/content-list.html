@@ -4,13 +4,6 @@
 
 <polymer-element name="content-list" attributes="stashId userId newContent">
     <template>
-        <style>
-            :host { }
-            content-element {
-                margin-top: 10px;
-                padding-left: 15px;
-            }
-        </style>
         <core-ajax id="getContent"
                    method="get"
                    url="/content/"
@@ -20,7 +13,7 @@
                    response="{{data}}"
                    handleAs="json">
         </core-ajax>
-        <div layout vertical center>
+        <div layout vertical>
             <template repeat="{{content in data}}">
                 <content-element data={{content}} userId={{userId}}></content-element>
             </template>
@@ -46,7 +39,6 @@
             },
             stashIdChanged: function(oldValue, newValue)
             {
-                console.log('changed');
                 this.$.getContent.go();
             },
             newContentChanged: function(oldValue, newValue)
