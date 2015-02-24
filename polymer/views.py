@@ -41,7 +41,7 @@ def comment(request):
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(comment.to_json(), ensure_ascii=False))
         else:
-            return returnEmpty()
+            return returnEmpty(request)
 
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -71,7 +71,7 @@ def content(request):
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(content.to_json(thisUser), ensure_ascii=False))
         else:
-            return returnEmpty()
+            return returnEmpty(request)
 
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -100,6 +100,25 @@ def update(request):
             status.save()
         return HttpResponse(status=200)
 
+@login_required(login_url='/login/')
+@csrf_exempt
+def user(request):
+    if request.method == "POST":
+        newBody = json.loads(request.body)
+        username = newBody['username']
+        try:
+            user = User.objects.get(username = username)
+        except:
+            user = None
+        if user == None:
+            return returnEmpty(request)
+        else:
+            data = { 'id':user.id,
+                     'name':user.get_username()}
+            return HttpResponse(status=200, content_type='application/json',
+                                 content=json.dumps({'id':user.id, 'name':user.get_username()}, ensure_ascii=False))
+
+
 def createStash(request, newBody, thisUser):
         name = newBody["stashName"]
         stash,created = Stash.objects.get_or_create(owner= thisUser, name = name)
@@ -110,16 +129,16 @@ def createStash(request, newBody, thisUser):
                 prev.save()
             stash.time = datetime.datetime.now()
             stash.save()
-            userEmails = newBody["users"]
+            userIds = newBody["users"]
             users = [thisUser]
-            for name in userEmails:
-                user = User.objects.get(username=name)
+            for userId in userIds:
+                user = User.objects.get(pk=userId)
                 users.append(user)
             stash.users.add(*users)
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(stash.to_json(), ensure_ascii=False))
         else:
-            return returnEmpty()
+            return returnEmpty(request)
 
 
 def createStati(content, stashId):
@@ -127,7 +146,7 @@ def createStati(content, stashId):
     for user in thisStash.users.all():
         Status(user = user, content = content, status = Status.NEW_STATUS).save()
 
-def returnEmpty():
+def returnEmpty(request):
     return HttpResponse(status=200, content_type='application/json',
                         content=render(request, 'empty.json'))
 

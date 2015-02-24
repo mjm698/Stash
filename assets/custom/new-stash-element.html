@@ -23,11 +23,28 @@
                    body="{{ postBody }}"
                    handleAs="json">
         </core-ajax>
+        <core-ajax id="getUser"
+                   auto="false"
+                   method="post"
+                   url="/user/"
+                   headers='{"USERID":"{{ userId }}"}'
+                   on-core-response="{{ userSuccess }}"
+                   on-core-error="{{ coreError }} "
+                   response="{{ newUser }}"
+                   body='{"username": "{{username}}" }'
+                   handleAs="json">
+        </core-ajax>
         <paper-action-dialog id='dialog' header='new stash'>
             <paper-input-decorator labelVisible='{{name === ""}}' label="Name">
                 <input id='nameInput' is='core-input' value={{name}}>
             </paper-input-decorator>
-            <user-list id='user-list'> </user-list>
+            <user-list id='user-list' users='{{users}}'> </user-list>
+            <div>
+                <paper-input-decorator labelVisible='{{username === ""}}' label="Username">
+                    <input id='usernameInput' is='core-input' value={{username}}>
+                </paper-input-decorator>
+                <paper-button on-click="{{add}}">Add user</paper-button>
+            </div>
             <paper-button on-click="{{save}}">Save</paper-button>
             <paper-button on-click="{{cancel}}">Cancel</paper-button>
         </paper-action-dialog>
@@ -35,6 +52,8 @@
     <script>
         Polymer({
             name: "",
+            username: "",
+            users: [],
             postBody: null,
             toggle: function() { this.$.dialog.toggle(); },
             coreError: function()
@@ -45,18 +64,47 @@
             cancel: function()
             {
                 this.name = "";
+                this.users = [];
                 this.$.dialog.close();
             },
             save: function() 
             {
                 if(this.name !== "")
                 {
-                    this.users = [];
+                    var userList = [];
+                    for(var i = 0; i < this.users.length; i++)
+                    {
+                        userList.push(this.users[i].id);
+                    }
                     this.time = new Date();
-                    this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":this.users });
+                    this.postBody = JSON.stringify({ "stashName":this.name, "time":this.time, "users":userList });
                     this.$.postStash.go();
                 }
-                this.$.dialog.close();
+
+                this.cancel();
+            },
+            add: function()
+            {
+                if(this.username !== "")
+                {
+                    for(var i= 0; i < this.users.length; i++)
+                    {
+                        if(this.users[i].name === this.username)
+                        {
+                            return;
+                        }
+                    }
+                    this.$.getUser.go();
+                    this.username = "";
+                }
+            },
+            userSuccess: function()
+            {
+                if(this.newUser.empty)
+                {
+                    return;
+                }
+                this.users.push(this.newUser);
             }
         });
     </script>

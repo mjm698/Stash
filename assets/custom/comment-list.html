@@ -36,7 +36,7 @@
                     <comment-element comment="{{comment}}"></comment-element>
                 </template>
             </div>
-            <paper-input-decorator label="Comment">
+            <paper-input-decorator labelVisible='{{newText === ""}}' label="Comment">
                 <textarea id='commentText' rows='2' value={{newText}}></textarea>
             </paper-input-decorator>
             <paper-button type='submit' id="commentButton" on-click="{{submitComment}}">Comment</paper-button>
@@ -44,6 +44,7 @@
     </template>
     <script>
         Polymer({
+            newText: '',
             submitComment: function()
             {
                 this.$.postComment.go();
