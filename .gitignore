@@ -3,3 +3,6 @@
 *.pyc
 *.sqlite3
 populateDatabase.py
+
+/bower_components/*
+/bower.json
