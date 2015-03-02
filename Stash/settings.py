@@ -78,8 +78,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR + '/static'
+STATIC_URL = 'http://sharedstash.com/Stash/public/static/'
+STATIC_ROOT = '/home/joinstas/website/Stash/public/static/'
 STATICFILES_DIRS = (
-    BASE_DIR + '/assets',
+    BASE_DIR + '/assets/',
 )
