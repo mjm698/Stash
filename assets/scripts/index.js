@@ -25,7 +25,7 @@ function loadStash(e)
         dialog.stashId = e.detail.id;
     }
 
-    toggleDrawer();
+    document.getElementById('drawerPanel').closeDrawer();
 }
 
 function newContent(e)

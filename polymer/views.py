@@ -48,12 +48,8 @@ def comment(request):
 def content(request):
     thisUser = request.user
 
-    if 'HTTP_STASHID' in request.META:
-        stashId = request.META['HTTP_STASHID']
-    else:
-        stashId = 1
-
     if request.method == "GET":
+        stashId = request.META['HTTP_STASHID']
         contents = Content.objects.filter(stash_id = stashId)
         return HttpResponse(status=200, content_type='application/json',
                             content=json.dumps([c.to_json(thisUser) for c in contents], ensure_ascii=False))
@@ -62,12 +58,8 @@ def content(request):
         newBody = json.loads(request.body)
         if 'stashId' not in newBody:
             return HttpResponse(status=400)
-        stashId = newBody['stashId']
-        link = newBody['link']
-        time = datetime.datetime.now()
-        content,created = Content.objects.get_or_create(user = thisUser, time = time, link = link, stash_id = stashId, updateTime = time)
-        if created:
-            createStati(content, stashId)
+        content = createContent(thisUser, datetime.datetime.now(), newBody['link'], newBody['stashId'])
+        if content:
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(content.to_json(thisUser), ensure_ascii=False))
         else:
@@ -121,25 +113,25 @@ def user(request):
 
 def createStash(request, newBody, thisUser):
         name = newBody["stashName"]
-        stash,created = Stash.objects.get_or_create(owner= thisUser, name = name)
-        if created:
-            prev,prevCreated = PreviousStash.objects.get_or_create(user = thisUser)
-            if prevCreated:
-                prev.stash = stash
-                prev.save()
-            stash.time = datetime.datetime.now()
-            stash.save()
-            userIds = newBody["users"]
-            users = [thisUser]
-            for userId in userIds:
-                user = User.objects.get(pk=userId)
-                users.append(user)
-            stash.users.add(*users)
+        userIds = newBody["users"]
+        users = [thisUser]
+        for userId in userIds:
+            user = User.objects.get(pk=userId)
+            users.append(user)
+        stash = createNewStash(thisUser, name, users)
+        if stash:
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(stash.to_json(), ensure_ascii=False))
         else:
             return returnEmpty(request)
 
+def createContent(thisUser, time, link, stashId):
+        content,created = Content.objects.get_or_create(user = thisUser, time = time, link = link, stash_id = stashId, updateTime = time)
+        if created:
+            createStati(content, stashId)
+            return content
+        else:
+            return None
 
 def createStati(content, stashId):
     thisStash = Stash.objects.get(pk=stashId)
@@ -156,3 +148,32 @@ def deleteStash(request, stashID):
     stash.id = stashID
     return HttpResponse(status=200, content_type='application/json',
                         content=render(request, 'stash.json', {'stash': stash}))
+
+def createNewStash(user, name, users):
+    stash,created = Stash.objects.get_or_create(owner = user, name = name)
+    if created:
+        prev,prevCreated = PreviousStash.objects.get_or_create(user = user)
+        if prevCreated:
+            prev.stash = stash
+            prev.save()
+        stash.time = datetime.datetime.now()
+        stash.save()
+        prev,prevCreated = PreviousStash.objects.get_or_create(user = user)
+        if prevCreated:
+            prev.stash = stash
+            prev.save()
+        stash.time = datetime.datetime.now()
+        stash.save()
+        stash.users.add(*users)
+        return stash
+    else:
+        return None
+
+def createDefaultStash(user):
+    name = (user.get_username() + "'s Stash")
+    users = [user]
+    stash = createNewStash(user, name, users)
+    time = datetime.datetime.now()
+    stashId = stash.id
+    link = "Welcome to Stash. You can add a new link by clicking the plus in the top right. Create a new stash by opening your stash list and clicking the plus."
+    createContent(user, time, link, stashId)

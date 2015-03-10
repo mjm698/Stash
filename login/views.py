@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from polymer.models import *
+import polymer.views
 
 @csrf_exempt
 def login_user(request):
@@ -67,6 +68,7 @@ def register(request):
             try:
                 user = User.objects.create_user(username, email, password)
                 user.save()
+                polymer.views.createDefaultStash(user)
                 resp = {"registered":True, "errors":errors}
                 return HttpResponse(status=200, content_type='application/json', content=json.dumps(resp))
             except Exception as ex:
