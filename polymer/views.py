@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, render_to_response, RequestContext, HttpResponse
+from django.shortcuts import render, render_to_response, RequestContext, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
@@ -109,6 +109,22 @@ def user(request):
                      'name':user.get_username()}
             return HttpResponse(status=200, content_type='application/json',
                                  content=json.dumps({'id':user.id, 'name':user.get_username()}, ensure_ascii=False))
+
+@login_required(login_url='/login/')
+@csrf_exempt
+def view(request):
+    return render(request, 'view.html')
+
+@login_required(login_url='/login/')
+@csrf_exempt
+def viewContent(request):
+    user = request.user
+    # newBody = json.loads(request.body)
+    # contentId = newBody['contentId']
+    contentId = request.META['HTTP_CONTENTID']
+    content = Content.objects.get(pk=contentId)
+    return HttpResponse(status=200, content_type='application/json',
+                        content=json.dumps(content.to_json(user), ensure_ascii=False))
 
 @csrf_exempt
 def stashName(request):

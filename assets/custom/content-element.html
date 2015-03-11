@@ -29,14 +29,18 @@
                    on-core-response="{{contentDeleted}}">
         </core-ajax>
         <div>
-            <div>Added: {{data.time}}</div>
-            <div>Status: {{data.status}}</div>
-            <div>{{data.link}}</div>
+            <div style='float:left;'>
+                <div>Added: {{data.time}}</div>
+                <div>Status: {{data.status}}</div>
+                <div>{{data.link}}</div>
+            </div>
+            <div layout horizontal style='float: right;'>
+                <paper-icon-button title='Archive' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
+                <paper-icon-button title='View original' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
+                <paper-icon-button title='Delete' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
+            </div>
         </div>
-        <paper-icon-button title='Archive' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
-        <paper-icon-button title='View original' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
-        <paper-icon-button title='Delete' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
-        <comment-list comments="{{data.comments}}" contentId={{data.id}} userId={{userId}}></comment-list>
+        <!-- <comment-list comments="{{data.comments}}" contentId={{data.id}} userId={{userId}}></comment-list> -->
     </template>
     <script>
         Polymer('content-element', {

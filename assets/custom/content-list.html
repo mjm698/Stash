@@ -12,14 +12,23 @@
                    response="{{data}}"
                    handleAs="json">
         </core-ajax>
-        <div layout vertical>
+        <core-ajax id="viewContent"
+                   method="get"
+                   url="/view/"
+                   params='{"contentId":"{{viewContentId}}"}'
+                   response="{{data}}"
+                   on-core-response="{{openSuccess}}"
+                   handleAs="">
+        </core-ajax>
+        <div layout vertical id='contentList'>
             <template repeat="{{content in data}}">
-                <content-element data={{content}} userId={{userId}}></content-element>
+                <content-element data={{content}} userId={{userId}} on-click={{openContent}}></content-element>
             </template>
         </div>
     </template>
     <script>
         Polymer({ 
+            selectedContent: "",
             ready: function()
             {
                 this.addEventListener('hideContent', this.hideContent)
@@ -46,6 +55,15 @@
                 {
                     this.data.push(newValue);
                 }
+            },
+            openContent: function(e, isClicked, element)
+            {
+                this.viewContentId = element.data.id;
+                window.location.href = "/view/?id=" + element.data.id;
+            },
+            openSuccess: function(a,b,c)
+            {
+                this.$.viewContent.go();
             }
         });
     </script>

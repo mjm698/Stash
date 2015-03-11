@@ -3,7 +3,7 @@
 <link rel="import" href="/static/components/paper-button/paper-button.html">
 <link rel="import" href="comment-element.html">
 
-<polymer-element name="comment-list" attributes="userId contentId comments">
+<polymer-element name="comment-list" attributes="contentId comments">
     <template>
         <style>
             :host {
@@ -14,8 +14,11 @@
                 margin-bottom: 10px;
             }
             .comments {
-                max-height: 150px;
+                max-height: 70vh;
                 overflow: auto;
+            }
+            h1 {
+                padding-left: 5px;
             }
         </style>
         <core-ajax id='postComment'
@@ -24,13 +27,13 @@
                    url='/comment/'
                    response='{{newComment}}'
                    on-core-response="{{ postSuccess }}"
-                   body='{"userId": "{{userId}}",
-                          "contentId": "{{contentId}}",
+                   body='{"contentId": "{{contentId}}",
                           "text": "{{newText}}" }'
                    handleAs='json'>
         </core-ajax> 
         <div>
-            <div id='commentsDiv' class='comments'>
+            <h1>Comments</h1>
+            <div class='comments'>
                 <template class='comments' repeat="{{comment in comments}}">
                     <comment-element comment="{{comment}}"></comment-element>
                 </template>

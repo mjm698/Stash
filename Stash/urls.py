@@ -9,6 +9,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'polymer.views.home', name='home'),
 
+    url(r'^view/$', 'polymer.views.view', name='view'),
+    url(r'^viewContent/$', 'polymer.views.viewContent', name='viewContent'),
+
     url(r'^login/$', 'login.views.login_user', name='login'),
     url(r'^logout/$', 'login.views.logout_user', name='logout'),
     url(r'^register/$', 'login.views.register', name='register'),
