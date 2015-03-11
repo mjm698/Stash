@@ -97,6 +97,8 @@
                     if(!('empty' in newValue)) 
                     { 
                         this.data.stashes.push(this.newStash);
+                        this.selectedStash = this.newStash.id;
+                        this.fire('loadStash', {id: this.newStash.id, name: this.newStash.name, userId: this.userId});
                     }
                 }
             },
