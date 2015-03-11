@@ -110,6 +110,19 @@ def user(request):
             return HttpResponse(status=200, content_type='application/json',
                                  content=json.dumps({'id':user.id, 'name':user.get_username()}, ensure_ascii=False))
 
+@csrf_exempt
+def stashName(request):
+    thisUser = request.user
+    if request.method == "POST":
+        newBody = json.loads(request.body)
+        stashId = newBody["stashID"]
+        stashName = newBody["newStashName"]
+        stash = Stash.objects.get(pk=stashId)
+        stash.name = stashName
+        stash.save()
+        return HttpResponse(status=200, content_type='application/json',
+                             content=json.dumps({'stashID':stash.id, 'stashName':stash.name}, ensure_ascii=False))
+
 
 def createStash(request, newBody, thisUser):
         name = newBody["stashName"]

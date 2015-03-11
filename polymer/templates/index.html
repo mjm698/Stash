@@ -23,7 +23,15 @@
             <core-header-panel main mode="waterfall">
                 <core-toolbar> 
                     <paper-icon-button core-drawer-toggle icon="menu"></paper-icon-button>
-                    <div layout horizontal id='stashName'> </div>
+                    <div layout horizontal>
+                        <paper-input-decorator id='stashNameDecorator'>
+                            <input is="core-input" disabled='true' id='stashName'> 
+                        </paper-input-decorator>
+                        <div layout vertical>
+                            <paper-icon-button icon='done' id='okayButton' style='display:none;'></paper-icon-button>
+                            <paper-icon-button icon='close' id='cancelButton' style='display:none;'></paper-icon-button>
+                        </div>
+                    </div>
                     <paper-icon-button id='addContentButton' icon="add"></paper-icon-button>
                 </core-toolbar>
                 <div class='contentContainer' flex>
@@ -32,7 +40,7 @@
             </core-header-panel>
             <core-header-panel drawer mode="seamed">
                 <div class='stashContainer'>
-                    <stash-list></stash-list>
+                    <stash-list id='stashList'></stash-list>
                 </div>
             </core-header-panel>
             <new-content-element id='newContent'>

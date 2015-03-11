@@ -41,3 +41,20 @@ div.registerDiv
 {
 	width: 200px;
 }
+
+#stashNameDecorator
+{
+    width: 200px;
+}
+paper-input-decorator /deep/ .unfocused-underline 
+{
+    /* line color when the input is unfocused */
+    background-color: #03a9f4;
+}
+
+paper-icon-button
+{
+    height: 24px;
+    padding-top: 6px;
+    padding-bottom: 0px;
+}

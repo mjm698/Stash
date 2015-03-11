@@ -3,7 +3,7 @@
 <link rel="import" href="stash-element.html">
 <link rel="import" href="new-stash-element.html">
 
-<polymer-element name="stash-list" attributes="userId loadStash selectedStash">
+<polymer-element name="stash-list" attributes="userId loadStash selectedStash newStashName">
     <template>
         <style>
             stash-element {
@@ -59,6 +59,16 @@
                    body='{"stashID": "{{stashID}}" }'
                    handleAs="json">
         </core-ajax>
+        <core-ajax id="changeStashName"
+                   auto="false"
+                   method="post"
+                   url="/stash/name/"
+                   response="{{newStashData}}"
+                   body='{"stashID": "{{selectedStash}}",
+                          "newStashName": "{{newStashName}}" }'
+                   on-core-response="{{stashNameChangeSuccess}}"
+                   handleAs="json">
+        </core-ajax>
         <core-ajax id="logout"
                    auto="false"
                    method="post"
@@ -102,6 +112,10 @@
                     }
                 }
             },
+            newStashNameChanged: function(old, newValue)
+            {
+                this.$.changeStashName.go();
+            },
             deleteStash: function(event, detail, target)
             {
                 var index;
@@ -125,7 +139,7 @@
                     {
                         if(this.data.stashes.length > 1)
                         {
-                            index = 1
+                            index = 1;
                         }
                     }
                     else { index = index - 1; }
@@ -149,6 +163,18 @@
             {
                 this.selectedStash = this.data.prevStash.id;
                 this.fire('loadStash', {id: this.data.prevStash.id, name: this.data.prevStash.name, userId: this.userId});
+            },
+            stashNameChangeSuccess: function()
+            {
+                for(index = 0; index<this.data.stashes.length; ++index)
+                {
+                    // == because different types
+                    if(this.data.stashes[index].id == this.selectedStash)
+                    {
+                        this.data.stashes[index].name = this.newStashName;
+                        break;
+                    }
+                }
             }
         });
     </script>
