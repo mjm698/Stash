@@ -26,6 +26,16 @@
             [drawer]
             {
                 background-color: #E5E5E5;
+                position: relative;
+            }
+            #contentTitle
+            {
+                padding-top: 8px;
+                padding-left: 20px;
+            }
+            #content-buttons
+            {
+                float: right;
             }
         </style>
         <core-ajax id="archiveContent"
@@ -49,7 +59,7 @@
                    method="get"
                    url="/viewContent/"
                    headers='{"CONTENTID" : "{{contentId}}" }'
-                   on-core-response="{{gotData}}"
+                   on-core-response="{{contentLoaded}}"
                    response="{{data}}"
                    handleAs="json">
         </core-ajax>
@@ -57,12 +67,14 @@
             <core-header-panel main mode="waterfall">
                 <core-toolbar> 
                     <div layout horizontal>
-                        <div id='contentTitle'>ljdkf</div>
-                        <paper-icon-button title='Archive' id='archiveButton' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
-                        <paper-icon-button title='View original' id='viewOriginalButton' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
-                        <paper-icon-button title='Delete' id='deleteButton' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
                         <paper-icon-button id='closeContentButton' icon="close" on-click='{{closeContent}}'></paper-icon-button>
-                        <paper-icon-button core-drawer-toggle icon="menu"></paper-icon-button>
+                        <div id='contentTitle'></div>
+                        <div id='content-buttons'>
+                            <paper-icon-button title='Archive' id='archiveButton' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
+                            <paper-icon-button title='View original' id='viewOriginalButton' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
+                            <paper-icon-button title='Delete' id='deleteButton' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
+                            <paper-icon-button core-drawer-toggle icon="menu"></paper-icon-button>
+                        </div>
                     </div>
                 </core-toolbar>
                 <div class='contentContainer'>
@@ -103,6 +115,10 @@
             {
                 console.log('close');
                 window.location.href = '/';
+            },
+            contentLoaded: function()
+            {
+                this.$.contentTitle.innerHTML = this.data.title;
             }
         });
     </script>

@@ -8,64 +8,19 @@
               display: block;
               position: relative;
               background-color: white;
-              margin-top: 10px;
-              padding: 10px;
+              height: 60px;
             }
         </style>
-        <core-ajax id="archiveContent"
-                   auto="false"
-                   method="post"
-                   url="/update/"
-                   body='{"contentId" : "{{data.id}}",
-                          "type" : "archive" }'
-                   on-core-response="{{contentArchived}}">
-        </core-ajax>
-        <core-ajax id="deleteContent"
-                   auto="false"
-                   method="post"
-                   url="/update/"
-                   body='{"contentId" : "{{data.id}}",
-                          "type" : "delete" }'
-                   on-core-response="{{contentDeleted}}">
-        </core-ajax>
         <div>
             <div style='float:left;'>
                 <div>Added: {{data.time}}</div>
                 <div>Status: {{data.status}}</div>
                 <div>{{data.link}}</div>
             </div>
-            <div layout horizontal style='float: right;'>
-                <paper-icon-button title='Archive' icon='done' on-click='{{archiveContent}}'></paper-icon-button>
-                <paper-icon-button title='View original' icon='pageview' on-click='{{openContent}}'></paper-icon-button>
-                <paper-icon-button title='Delete' icon='delete' on-click='{{deleteContent}}'></paper-icon-button>
-            </div>
         </div>
-        <!-- <comment-list comments="{{data.comments}}" contentId={{data.id}} userId={{userId}}></comment-list> -->
     </template>
     <script>
         Polymer('content-element', {
-            archiveContent: function()
-            {
-                this.$.archiveContent.go();
-            },
-            contentArchived: function()
-            {
-                this.fire('hideContent', {id: this.data.id}); 
-            },
-            deleteContent: function()
-            {
-                this.$.deleteContent.go();
-            },
-            contentDeleted: function()
-            {
-                this.fire('hideContent', {id: this.data.id}); 
-            },
-            openContent: function()
-            {
-                //todo: open link in new tab
-                console.log('open');
-            },
-            commentSubmitEvent: function() { }
         });
     </script>
 </polymer-element>
