@@ -11,11 +11,13 @@
                 font-size: 9pt;
             }
             comment-element {
-                margin-bottom: 10px;
+                padding-bottom: 10px;
             }
             .comments {
                 max-height: 70vh;
                 overflow: auto;
+            }
+            #commentsDiv {
             }
             h1 {
                 padding-left: 5px;
@@ -27,13 +29,12 @@
                    url='/comment/'
                    response='{{newComment}}'
                    on-core-response="{{ postSuccess }}"
-                   body='{"contentId": "{{contentId}}",
-                          "text": "{{newText}}" }'
+                   body='{"contentId": "{{contentId}}","text": "{{newText}}" }'
                    handleAs='json'>
         </core-ajax> 
         <div>
             <h1>Comments</h1>
-            <div class='comments'>
+            <div class='comments' id='commentsDiv'>
                 <template class='comments' repeat="{{comment in comments}}">
                     <comment-element comment="{{comment}}"></comment-element>
                 </template>
@@ -49,6 +50,7 @@
             newText: '',
             submitComment: function()
             {
+                //this.newText = this.newText.replace(/\\n/g, "\\n");
                 this.$.postComment.go();
             },
             postSuccess: function()

@@ -11,15 +11,13 @@
                 margin-right: 5px;
             }
         </style>
-        <core-ajax id="postContent"
+        <core-ajax id="parseContent"
                    auto="false"
                    method="post"
-                   url="/content/"
-                   headers='{"USERID":"{{ userId }}"}'
-                   on-core-response="{{ postSuccess }}"
-                   on-core-error="{{ coreError }} "
+                   url="/parse/"
+                   on-core-response="{{postSuccess}}"
                    response="{{ newContent }}"
-                   body="{{ postBody }}"
+                   body='{"link":"{{link}}", "stashId":"{{stashId}}"}'
                    handleAs="json">
         </core-ajax>
         <paper-action-dialog id='dialog' header='new content'>
@@ -33,7 +31,6 @@
     <script>
         Polymer({
             link: "",
-            postBody: null,
             ready: function() 
             {
                 this.$.dialog.addEventListener('core-overlay-close-completed', this.clearDialog);
@@ -48,7 +45,14 @@
             },
             postSuccess: function()
             {
-                this.fire('addNewContent', {content: this.newContent});
+                if (this.newContent.error)
+                {
+                    console.log(this.newContent.message);
+                }
+                else
+                {
+                    this.fire('addNewContent', {content: this.newContent});
+                }
             },
             cancel: function()
             {
@@ -59,9 +63,7 @@
             {
                 if(this.link !== "")
                 {
-                    this.time = new Date();
-                    this.postBody = JSON.stringify({ "stashId":this.stashId, "time":this.time, "link":this.link });
-                    this.$.postContent.go();
+                    this.$.parseContent.go();
                 }
                 this.link = "";
                 this.$.dialog.close();

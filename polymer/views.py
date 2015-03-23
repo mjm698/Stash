@@ -1,4 +1,5 @@
 import json
+import requests
 from django.shortcuts import render, render_to_response, RequestContext, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -32,7 +33,7 @@ def stash(request):
 @csrf_exempt
 def comment(request):
     if request.method == "POST":
-        newBody = json.loads(request.body)
+        newBody = json.loads(request.body, strict = False)
         thisUser = request.user
         text = newBody["text"]
         time = datetime.datetime.now()
@@ -58,7 +59,7 @@ def content(request):
         newBody = json.loads(request.body)
         if 'stashId' not in newBody:
             return HttpResponse(status=400)
-        content = createContent(thisUser, datetime.datetime.now(), newBody['link'], newBody['stashId'])
+        content = createContent(thisUser, datetime.datetime.now(), newBody['link'], newBody['stashId'], newBody['title'], newBody['content'])
         if content:
             return HttpResponse(status=200, content_type='application/json',
                                 content=json.dumps(content.to_json(thisUser), ensure_ascii=False))
@@ -119,8 +120,6 @@ def view(request):
 @csrf_exempt
 def viewContent(request):
     user = request.user
-    # newBody = json.loads(request.body)
-    # contentId = newBody['contentId']
     contentId = request.META['HTTP_CONTENTID']
     content = Content.objects.get(pk=contentId)
     return HttpResponse(status=200, content_type='application/json',
@@ -139,6 +138,22 @@ def stashName(request):
         return HttpResponse(status=200, content_type='application/json',
                              content=json.dumps({'stashID':stash.id, 'stashName':stash.name}, ensure_ascii=False))
 
+@login_required(login_url='/login/')
+@csrf_exempt
+def parse(request):
+    thisUser = request.user
+    newBody = json.loads(request.body)
+    link = newBody["link"]
+    stashId = newBody["stashId"]
+    fullUrl = 'https://readability.com/api/content/v1/parser?url=' + link + '&token=8a61b740a6767f2c33728cc19f87e7f817cb1c39'
+    r = requests.get(fullUrl)
+    responseBody = json.loads(r.text)
+    if 'error' in responseBody:
+        return HttpResponse(status=200, content_type='application/json', content=json.dumps({'error':'True', 'message':responseBody['messages'], 'link':link}, ensure_ascii=False))
+    else:
+        content = createContent(thisUser, datetime.datetime.now(), responseBody['url'], stashId, responseBody['title'], responseBody['content'])
+        return HttpResponse(status=200, content_type='application/json',
+                            content=json.dumps(content.to_json(thisUser), ensure_ascii=False))
 
 def createStash(request, newBody, thisUser):
         name = newBody["stashName"]
@@ -154,13 +169,13 @@ def createStash(request, newBody, thisUser):
         else:
             return returnEmpty(request)
 
-def createContent(thisUser, time, link, stashId):
-        content,created = Content.objects.get_or_create(user = thisUser, time = time, link = link, stash_id = stashId, updateTime = time)
-        if created:
-            createStati(content, stashId)
-            return content
-        else:
-            return None
+def createContent(thisUser, time, link, stashId, title, content):
+    content,created = Content.objects.get_or_create(user = thisUser, time = time, link = link, stash_id = stashId, updateTime = time, title = title, content = content)
+    if created:
+        createStati(content, stashId)
+        return content
+    else:
+        return None
 
 def createStati(content, stashId):
     thisStash = Stash.objects.get(pk=stashId)
@@ -204,5 +219,7 @@ def createDefaultStash(user):
     stash = createNewStash(user, name, users)
     time = datetime.datetime.now()
     stashId = stash.id
-    link = "Welcome to Stash. You can add a new link by clicking the plus in the top right. Create a new stash by opening your stash list and clicking the plus."
-    createContent(user, time, link, stashId)
+    link = "default"
+    title = "Welcome to Stash."
+    content = "You can add a new link by clicking the plus in the top right. Create a new stash by opening your stash list and clicking the plus."
+    createContent(user, time, link, stashId, title, content)

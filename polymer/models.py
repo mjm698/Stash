@@ -35,7 +35,9 @@ class Content(models.Model):
     user = models.ForeignKey(User)
     stash = models.ForeignKey(Stash)
 
-    link = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
+    link = models.SlugField(max_length=200)
+    content = models.TextField(null=True)
     time = models.DateTimeField('date added')
     updateTime = models.DateTimeField('date updated')
     
@@ -50,7 +52,9 @@ class Content(models.Model):
                 'updateTime' : self.updateTime.ctime(),
                 'link' : self.link,
                 'status' : Status.objects.filter(content = self).get(user=user).to_json(),
-                'comments' : [c.to_json() for c in Comment.objects.filter(content = self)]
+                'comments' : [c.to_json() for c in Comment.objects.filter(content = self)],
+                'content' : self.content,
+                'title' : self.title
                 }
 
 class Status(models.Model):

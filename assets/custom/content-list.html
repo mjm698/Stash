@@ -3,6 +3,30 @@
 
 <polymer-element name="content-list" attributes="stashId userId newContent">
     <template>
+        <style>
+            content-element {
+                margin: 10px 0;
+                padding-top: 5px;
+                padding-left: 5px;
+            }
+            #content-list {
+                clear: both;
+            }
+            .content-element-buttons {
+                visibility: hidden;
+                position: relative;
+                float: right;
+                height: 0px;
+            }
+            #content-list:hover .content-element-buttons {
+                visibility: initial;
+                top: -60px;
+                right: 10px;
+            }
+            paper-icon-button {
+                display: relative;
+            }
+        </style>
         <core-ajax id="getContent"
                    method="get"
                    url="/content/"
@@ -20,9 +44,32 @@
                    on-core-response="{{openSuccess}}"
                    handleAs="">
         </core-ajax>
-        <div layout vertical id='contentList'>
+        <core-ajax id="archiveContent"
+                   auto="false"
+                   method="post"
+                   url="/update/"
+                   body='{"contentId" : "{{contentId}}",
+                          "type" : "archive" }'
+                   on-core-response="{{contentArchived}}">
+        </core-ajax>
+        <core-ajax id="deleteContent"
+                   auto="false"
+                   method="post"
+                   url="/update/"
+                   body='{"contentId" : "{{contentId}}",
+                          "type" : "delete" }'
+                   on-core-response="{{contentDeleted}}">
+        </core-ajax>
+        <div id='contentList'>
             <template repeat="{{content in data}}">
-                <content-element data={{content}} userId={{userId}} on-click={{openContent}}></content-element>
+                <div id='content-list'>
+                    <content-element data={{content}} userId={{userId}} on-click={{openContent}}></content-element>
+                    <div class='content-element-buttons'>
+                        <paper-icon-button title='Archive' icon='done' on-click='{{archiveContent}}' data-incby="{{content.id}}"></paper-icon-button>
+                        <paper-icon-button title='Delete' icon="delete" on-click="{{deleteContent}}" data-incby="{{content.id}}"></paper-icon-button>
+                        <paper-icon-button title='View original' icon="pageview" on-click="{{openOriginalContent}}" data-incby="{{content.id}}"></paper-icon-button>
+                    </div>
+                </div>
             </template>
         </div>
     </template>
@@ -34,11 +81,11 @@
                 this.addEventListener('hideContent', this.hideContent)
                 this.addEventListener('addNewContent', this.addNewContent)
             },
-            hideContent: function(e)
+            hideContent: function(contentId)
             {
                 for(var index = 0; index < this.data.length; ++index)
                 {
-                    if(e.detail.id == this.data[index].id)
+                    if(contentId == this.data[index].id)
                     {
                         this.data.splice(index, 1);
                         break;
@@ -64,6 +111,30 @@
             openSuccess: function(a,b,c)
             {
                 this.$.viewContent.go();
+            },
+            deleteContent: function(event, detail, target)
+            {
+                this.contentId = target.attributes['data-incby'].value; 
+                this.$.deleteContent.go();
+                this.hideContent(this.contentId);
+            },
+            archiveContent: function(event, detail, target)
+            {
+                this.contentId = target.attributes['data-incby'].value; 
+                this.$.archiveContent.go();
+                this.hideContent(this.contentId);
+            },
+            openOriginalContent: function(event, detail, target)
+            {
+                this.contentId = target.attributes['data-incby'].value; 
+                for(var index = 0; index < this.data.length; ++index)
+                {
+                    if(this.contentId == this.data[index].id)
+                    {
+                        console.log("OPEN LINK: " + this.data[index].link);
+                        break;
+                    }
+                }
             }
         });
     </script>

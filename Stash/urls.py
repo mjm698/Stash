@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^comment/$', 'polymer.views.comment', name='comment'),
     url(r'^content/$', 'polymer.views.content', name='content'),
+    url(r'^parse/$', 'polymer.views.parse', name='parse'),
     url(r'^stash/$', 'polymer.views.stash', name='stash'),
     url(r'^stash/name/$', 'polymer.views.stashName', name='stashName'),
     url(r'^update/$', 'polymer.views.update', name='update'),
